@@ -60,7 +60,10 @@ export PATH=/$HOMEDRIVEL/portabledevops/R/R-3.3.1/bin/x64:$PATH
 export PATH=/$HOMEDRIVEL/portabledevops/nodejs:/$HOMEDRIVEL/portabledevops/nodejs/appdata/npm:$PATH
 
 # portable git and bash
-export PATH=/$HOMEDRIVEL/portabledevops/PortableGit/bin:$PATH
+CMDERVER=`echo $CMDER_ROOT| awk -F/ '{print $NF}'`
+if [ $CMDERVER == cmdermini ]; then 
+	export PATH=/$HOMEDRIVEL/portabledevops/PortableGit/bin:$PATH
+fi
 
 # portable mingw
 export PATH=/$HOMEDRIVEL/portabledevops/mingw/bin:$PATH
