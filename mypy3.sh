@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYPATH=/$HOMEDRIVEL/portabledevops/Python3
+PYPATH=$PORTABLEPATH/python/Python34
 export PATH=$PYPATH:$PYPATH/Scripts:$PATH
 alias mypip="$PYPATH/python $PYPATH/Scripts/pip.exe"
 alias myipy="$PYPATH/python $PYPATH/Scripts/ipython.exe"
