@@ -30,6 +30,7 @@ alias scite=$PORTABLEPATH/scite/SciTE.exe
 alias st3=$PORTABLEPATH/sublimetext3/sublime_text.exe
 alias gshot=$PORTABLEPATH/greenshot/Greenshot.exe
 alias kitty=$PORTABLEPATH/kitty/kitty_portable.exe
+alias putty=$PORTABLEPATH/putty/putty.exe
 
 # portable calibre tool
 export PATH=$PORTABLEPATH/calibre/Calibre:$PATH
