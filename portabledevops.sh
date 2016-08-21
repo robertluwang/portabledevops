@@ -1,6 +1,6 @@
 # portabledevops customized setting 
 # By Robert Wang
-# Aug 15, 2016
+# Aug 21, 2016
 # Usage: place this portabledevops.sh to git/msys etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'
 
 export HOMEDRIVEL=`pwd -W | cut -d: -f1`
@@ -13,6 +13,7 @@ fi
 export HOME=/home/$USERNAME
 
 export USERPROFILE=$HOME
+export HOMEPATH=$HOME
 
 # customized portable devops tools folder, need to manually update it according your real path, all tools (includes git) under to this folder directly, 
 # don't use cmder/Vendor structure since terminal could be different than cmder, for example console2.
