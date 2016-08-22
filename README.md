@@ -12,7 +12,7 @@ A portable devops shell env on windows, easy customization of cmder/console+git/
 
 [git](https://git-for-windows.github.io/) the msys already replaced by Git for Windows. Git for Windows focuses on offering a lightweight, native set of tools that bring the full feature set of the Git SCM to Windows while providing appropriate user interfaces for experienced Git users and novices alike.
 
-## what is portabledevops?
+## What is portabledevops?
 
 1. it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk
 2. the portabledevops folder structure:
@@ -45,7 +45,7 @@ ruby23/
 dockertoolbox/      
 virtualbox/ 
 ```
-## how to setup portabledevops?
+## How to setup portabledevops?
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.
 
