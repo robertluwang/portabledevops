@@ -52,8 +52,8 @@ It is extremely easy, the idea is to place all portable customization in one pla
 - place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i' 
 - place mypy2.sh and mypy3.sh to git /etc/ folder
 - add cmder task 
-bash :  %ConEmuDir%\..\..\..\git\bin\bash --login -i
+bash :  cmd /c "%ConEmuDir%\..\..\..\git\bin\bash --login -i"
 - add console tab
-bash:  \portabledevops\git\bin\bash.exe --login -i
+bash:  cmd /c "\portabledevops\git\bin\bash.exe --login -i"
 
 
