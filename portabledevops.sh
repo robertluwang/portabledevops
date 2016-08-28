@@ -1,12 +1,13 @@
 # portabledevops customized setting 
 # By Robert Wang
-# Aug 21, 2016
-# Usage: place this portabledevops.sh to git/msys etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'
+# Aug 28, 2016
+# Usage: place this portabledevops.sh to git /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'
 
 export HOMEDRIVEL=`pwd -W | cut -d: -f1`
 export HOMEDRIVE=$HOMEDRIVEL:
 
 if [ ! -d /home/$USERNAME ]; then
+	echo "First time to run git/bash, create home folder: /home/$USERNAME"
 	mkdir -p /home/$USERNAME
 fi 
 
@@ -15,11 +16,15 @@ export HOME=/home/$USERNAME
 export USERPROFILE=$HOME
 export HOMEPATH=$HOME
 
-# customized portable devops tools folder, need to manually update it according your real path, all tools (includes git) under to this folder directly, 
+cd $HOME
+
+# auto fetch portable devops tools folder, all tools (includes git) under to this folder directly, 
+# for example:  L:\portabledevops\git or L:\oldhorse\portable\git
 # don't use cmder/Vendor structure since terminal could be different than cmder, for example console2.
-# export PORTABLEPATH=/$HOMEDRIVEL/<portablepath>
-# <portablepath> could be nested like oldhorse/portableapps
-export PORTABLEPATH=/$HOMEDRIVEL/portabledevops
+
+# rev - string reverse tool which missing in msys, you can place rev binary to git /usr/bin folder
+export PORTFOLDER=`pwd -W|rev|cut -d/ -f4-|rev|cut -d: -f2-`
+export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
 
 # production tool 
 alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
@@ -82,7 +87,7 @@ alias cmdermini=$PORTABLEPATH/cmdermini/cmder.exe
 # portable console2
 alias console=$PORTABLEPATH/console2/Console.exe
 
-cd $HOME
+
 
 
 

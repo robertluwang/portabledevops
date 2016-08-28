@@ -45,12 +45,24 @@ ruby23/
 dockertoolbox/      
 virtualbox/ 
 ```
+3. portabledevops config files list
+```
+/etc/profile.d/portabledevops.sh   portable customization, including ENV, alias
+/etc/mypy2.sh                      customized setting for Python2
+/etc/mypy3.sh                      customized setting for Python3
+<virtualenv_project>/ve.sh         virtualenv activate replacement 
+rev.c                              C source code for string reverse
+/usr/bin/rev                       binary for string reverse on windows
+README.md                          this file
+```
+
 ## How to setup portabledevops?
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.
 
 - place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i' 
 - place mypy2.sh and mypy3.sh to git /etc/ folder
+- place rev binary to git /usr/bin folder
 - add cmder task 
 bash :  cmd /c "%ConEmuDir%\..\..\..\git\bin\bash --login -i"
 - add console tab
