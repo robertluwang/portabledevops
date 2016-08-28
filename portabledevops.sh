@@ -87,10 +87,12 @@ alias cmdermini=$PORTABLEPATH/cmdermini/cmder.exe
 # portable console2
 alias console=$PORTABLEPATH/console2/Console.exe
 
+# ssh-agent 
+eval $(ssh-agent -s)
 
-
-
-
-
-
-
+if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
+	echo "ssh key not exist: /home/$USERNAME/.ssh/id_rsa"
+	echo "please generate it using ssh-keygen"
+else
+	ssh-add /home/$USERNAME/.ssh/id_rsa
+fi 
