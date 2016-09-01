@@ -59,7 +59,7 @@ README.md                          this file
 ## How to setup portabledevops?
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.
-
+```
 - place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i' 
 - place mypy2.sh and mypy3.sh to git /etc/ folder
 - place rev binary to git /usr/bin folder
@@ -67,5 +67,5 @@ It is extremely easy, the idea is to place all portable customization in one pla
 bash :  cmd /c "%ConEmuDir%\..\..\..\git\bin\bash --login -i"
 - add console tab
 bash:  cmd /c "\portabledevops\git\bin\bash.exe --login -i"
-
+```
 
