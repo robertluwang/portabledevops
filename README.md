@@ -14,8 +14,8 @@ A portable devops shell env on windows, easy customization of cmder/console+git/
 
 ## What is portabledevops?
 
-1. it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk  
-2. the portabledevops folder structure:    
+it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk  
+### the portabledevops folder structure:    
 `<drive>`:\portabledevops\  
 `* productive tools`    
 qdir/   
@@ -44,7 +44,7 @@ ruby23/
 dockertoolbox/        
 virtualbox/   
 
-3. portabledevops config files list  
+### portabledevops config files list  
 /etc/profile.d/portabledevops.sh   portable customization, including ENV, alias  
 /etc/mypy2.sh                      customized setting for Python2  
 /etc/mypy3.sh                      customized setting for Python3  
