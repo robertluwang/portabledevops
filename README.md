@@ -52,22 +52,8 @@ virtualbox/
 rev.c                              C source code for string reverse  
 /usr/bin/rev                       binary for string reverse on windows  
 README.md                          this file  
-<<<<<<< HEAD
 
 ## How to setup portabledevops?
-=======
-
-## How to setup portabledevops?
-
-It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.  
-1) place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'   
-2) place mypy2.sh and mypy3.sh to git /etc/ folder  
-3) place rev binary to git /usr/bin folder  
-4) add cmder task   
-`bash :  cmd /c "%ConEmuDir%\..\..\..\git\bin\bash --login -i"`  
-5) add console tab  
-`bash:  cmd /c "\portabledevops\git\bin\bash.exe --login -i"`   
->>>>>>> 6086b189a8e4ad154971ef49bb832ea75503e18f
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.  
 1) place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'   
