@@ -14,10 +14,10 @@ A portable devops shell env on windows, easy customization of cmder/console+git/
 
 ## What is portabledevops?
 
-1. it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk
-2. the portabledevops folder structure:  
+1. it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk  
+2. the portabledevops folder structure:    
 `<drive>`:\portabledevops\  
-* productive tools  
+`* productive tools`    
 qdir/   
 7z/   
 filezilla/   
@@ -28,11 +28,11 @@ kitty/
 putty/  
 greenshot/             
 imgburn/   
-* shell   
+`* shell`     
 cmdermini/             
 console2/  
 git/                              
-* dev tool  
+`* dev tool`    
 mingw/    
 python/               
 go/                                              
@@ -40,11 +40,11 @@ Lua/
 nodejs/                
 R/                     
 ruby23/                  
-* vm and docker tool                                          
+`* vm and docker tool`                                           
 dockertoolbox/        
 virtualbox/   
 
-3. portabledevops config files list
+3. portabledevops config files list  
 /etc/profile.d/portabledevops.sh   portable customization, including ENV, alias  
 /etc/mypy2.sh                      customized setting for Python2  
 /etc/mypy3.sh                      customized setting for Python3  
@@ -56,11 +56,11 @@ README.md                          this file
 ## How to setup portabledevops?
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.
-- place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'   
-- place mypy2.sh and mypy3.sh to git /etc/ folder  
-- place rev binary to git /usr/bin folder  
-- add cmder task   
-bash :  cmd /c "%ConEmuDir%\..\..\..\git\bin\bash --login -i"  
-- add console tab  
-bash:  cmd /c "\portabledevops\git\bin\bash.exe --login -i"  
+1) place the script portabledevops.sh to git/msys /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'   
+2) place mypy2.sh and mypy3.sh to git /etc/ folder  
+3) place rev binary to git /usr/bin folder  
+4) add cmder task   
+`bash :  cmd /c "%ConEmuDir%\..\..\..\git\bin\bash --login -i"`  
+5) add console tab  
+`bash:  cmd /c "\portabledevops\git\bin\bash.exe --login -i"`   
 
