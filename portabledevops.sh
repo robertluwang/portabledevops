@@ -1,6 +1,6 @@
 # portabledevops customized setting 
 # By Robert Wang
-# Aug 28, 2016
+# Sept 4th, 2016
 # Usage: place this portabledevops.sh to git /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'
 
 export HOMEDRIVEL=`pwd -W | cut -d: -f1`
@@ -33,6 +33,7 @@ alias fzp=$PORTABLEPATH/filezilla/FileZillaPortable.exe
 alias qdir=$PORTABLEPATH/qdir/Q-Dir.exe
 alias scite=$PORTABLEPATH/scite/SciTE.exe
 alias st3=$PORTABLEPATH/sublimetext3/sublime_text.exe
+alias mp=$PORTABLEPATH/markdownpad2/MarkdownPad2.exe
 alias gshot=$PORTABLEPATH/greenshot/Greenshot.exe
 alias kitty=$PORTABLEPATH/kitty/kitty_portable.exe
 alias putty=$PORTABLEPATH/putty/putty.exe
@@ -73,7 +74,27 @@ export PATH=$PORTABLEPATH/R/R-3.3.1/bin/x64:$PATH
 export PATH=$PORTABLEPATH/ruby23/bin:$PATH
 
 # portable nodejs
-export PATH=$PORTABLEPATH/nodejs/App/NodeJS:$PORTABLEPATH/nodejs/App/DefaultData:$PATH
+export PATH=$PORTABLEPATH/nodejs:$PATH
+
+if [ ! -d $PORTABLEPATH/nodejs/.node_modules_global ]; then
+	echo "First time to create npm modules global: $PORTABLEPATH/nodejs/.node_modules_global"
+	mkdir -p $PORTABLEPATH/nodejs/.node_modules_global
+fi
+$PORTABLEPATH/nodejs/npm config set prefix=$PORTABLEPATH/nodejs/.node_modules_global
+
+if [ ! -d $PORTABLEPATH/nodejs/npm-cache ]; then
+	echo "First time to create npm-cache: $PORTABLEPATH/nodejs/npm-cache"
+	mkdir -p $PORTABLEPATH/nodejs/npm-cache
+fi
+$PORTABLEPATH/nodejs/npm config set cache=$PORTABLEPATH/nodejs/npm-cache
+
+if [ ! -d $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp ]; then
+	echo "First time to create tmp: $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp"
+	mkdir -p $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp
+fi
+$PORTABLEPATH/nodejs/npm config set tmp=$PORTABLEPATH/home/$USERNAME/AppData/Local/Temp
+
+export PATH=$PORTABLEPATH/nodejs/.node_modules_global:$PATH
 
 # portable git and bash
 export PATH=$PORTABLEPATH/git/bin:$PATH
