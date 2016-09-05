@@ -111,6 +111,10 @@ alias console=$PORTABLEPATH/console2/Console.exe
 # portable dillinger
 alias dill='$PORTABLEPATH/nodejs/node $PORTABLEPATH/dillinger/app'
 
+# portable gitbook editor
+export PATH=$PORTABLEPATH/gitbookeditor/app-6.2.1:$PATH
+alias gitbooked='cd $PORTABLEPATH/gitbookeditor/app-6.2.1;$PORTABLEPATH/gitbookeditor/Update.exe --processStart Editor.exe'
+
 # ssh-agent 
 eval $(ssh-agent -s)
 
