@@ -108,6 +108,9 @@ alias cmdermini=$PORTABLEPATH/cmdermini/cmder.exe
 # portable console2
 alias console=$PORTABLEPATH/console2/Console.exe
 
+# portable dillinger
+alias dill='$PORTABLEPATH/nodejs/node $PORTABLEPATH/dillinger/app'
+
 # ssh-agent 
 eval $(ssh-agent -s)
 
