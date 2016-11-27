@@ -1,6 +1,6 @@
 # portabledevops customized setting 
 # By Robert Wang
-# Oct 31, 2016
+# Sept 4th, 2016
 # Usage: place this portabledevops.sh to git /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'
 
 #
@@ -77,18 +77,31 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
 	alias dockerstart='cd $DOCKERTOOLBOX;./start.sh'
 fi 
 
+# portable vagrant
+if [ -d $PORTABLEPATH/HashiCorp ]; then
+	export PATH=$PORTABLEPATH/HashiCorp/Vagrant/bin:$PATH
+fi
+
 # portable virtualbox 
 if [ -d $PORTABLEPATH/virtualbox ]; then 
 	alias vboxp='cd $PORTABLEPATH/virtualbox; ./portablevbox.bat'
 fi 
 
 # portable python
-if [ -e /etc/mypy2.sh ]; then
-	alias mypy2='source /etc/mypy2.sh'
-fi
-if [ -e /etc/mypy3.sh ]; then
-	alias mypy3='source /etc/mypy3.sh'
-fi
+PY2PATH=$PORTABLEPATH/python/Python27
+PY3PATH=$PORTABLEPATH/python/Python34
+
+export PATH=$PY2PATH:$PY2PATH/Scripts:$PY3PATH:$PY3PATH/Scripts:$PATH
+alias py2="$PY2PATH/python.exe"
+alias py3="$PY3PATH/python.exe"
+alias pip2="$PY2PATH/python $PY2PATH/Scripts/pip.exe"
+alias pip3="$PY3PATH/python $PY3PATH/Scripts/pip.exe"
+alias ipy2="$PY2PATH/python $PY2PATH/Scripts/ipython.exe"
+alias ipy3="$PY3PATH/python $PY3PATH/Scripts/ipython.exe"
+alias nb2="$PY2PATH/python $PY2PATH/Scripts/jupyter-notebook.exe"
+alias nb3="$PY3PATH/python $PY3PATH/Scripts/jupyter-notebook.exe"
+alias easy2="$PY2PATH/python $PY2PATH/Scripts/easy_install.exe"
+alias easy3="$PY3PATH/python $PY3PATH/Scripts/easy_install.exe"
 
 # portable Golang
 if [ -d $PORTABLEPATH/go ]; then
