@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # name: jupykernel.sh
 # install ipython kernel for both python2/3 and move to user location ~/.ipython/kernels
-# usage: source jupykernel.sh
+# usage: $source jupykernel.sh
 # Nov 27, 2016
 # Robert Wang
 

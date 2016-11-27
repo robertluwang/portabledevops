@@ -1,6 +1,6 @@
 # portabledevops customized setting 
 # By Robert Wang
-# Sept 4th, 2016
+# Nov 27, 2016
 # Usage: place this portabledevops.sh to git /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'
 
 #
