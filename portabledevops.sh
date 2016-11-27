@@ -94,14 +94,14 @@ PY3PATH=$PORTABLEPATH/python/Python34
 export PATH=$PY2PATH:$PY2PATH/Scripts:$PY3PATH:$PY3PATH/Scripts:$PATH
 alias py2="$PY2PATH/python.exe"
 alias py3="$PY3PATH/python.exe"
-alias pip2="$PY2PATH/python $PY2PATH/Scripts/pip.exe"
-alias pip3="$PY3PATH/python $PY3PATH/Scripts/pip.exe"
-alias ipy2="$PY2PATH/python $PY2PATH/Scripts/ipython.exe"
-alias ipy3="$PY3PATH/python $PY3PATH/Scripts/ipython.exe"
-alias nb2="$PY2PATH/python $PY2PATH/Scripts/jupyter-notebook.exe"
-alias nb3="$PY3PATH/python $PY3PATH/Scripts/jupyter-notebook.exe"
-alias easy2="$PY2PATH/python $PY2PATH/Scripts/easy_install.exe"
-alias easy3="$PY3PATH/python $PY3PATH/Scripts/easy_install.exe"
+alias pip2="$PY2PATH/python.exe $PY2PATH/Scripts/pip.exe"
+alias pip3="$PY3PATH/python.exe $PY3PATH/Scripts/pip.exe"
+alias ipy2="$PY2PATH/python.exe $PY2PATH/Scripts/ipython.exe"
+alias ipy3="$PY3PATH/python.exe $PY3PATH/Scripts/ipython.exe"
+alias jupy2="$PY2PATH/python.exe $PY2PATH/Scripts/jupyter.exe"
+alias jupy3="$PY3PATH/python.exe $PY3PATH/Scripts/jupyter.exe"
+alias easy2="$PY2PATH/python.exe $PY2PATH/Scripts/easy_install.exe"
+alias easy3="$PY3PATH/python.exe $PY3PATH/Scripts/easy_install.exe"
 
 # portable Golang
 if [ -d $PORTABLEPATH/go ]; then
