@@ -46,7 +46,7 @@ virtualbox/
 
 ### portabledevops config files list  
 /etc/profile.d/portabledevops.sh - portable customization, including ENV, alias  
-jupykernel.sh - setup jupyter notebook kernels for python2/3
+jupykernel.sh - setup jupyter notebook kernels for python2/3  
 &lt;virtualenv_project&gt;/ve.sh - virtualenv activate replacement   
 rev.c - C source code for string reverse  
 /usr/bin/rev - binary for string reverse on windows  
