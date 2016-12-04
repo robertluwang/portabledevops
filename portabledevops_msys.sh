@@ -186,11 +186,8 @@ alias nmpstart='source $PORTABLEPATH/nginx/nmp_start.sh'
 alias nmpstop='source $PORTABLEPATH/nginx/nmp_stop.sh'
 
 # ssh-agent
-runningagent=`ps -ef|grep -c ssh-agent`
-if [ $runningagent == "0" ];then
-    eval $(ssh-agent -s)
-fi 
-
+eval $(ssh-agent -s)
+ 
 if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
 	echo "ssh key not exist: /home/$USERNAME/.ssh/id_rsa"
 	echo "please generate it using ssh-keygen"

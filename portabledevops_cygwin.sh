@@ -69,10 +69,8 @@ if [ -d $PORTABLEPATH/vagrant ]; then
 fi
 
 # ssh-agent
-runningagent=`ps -ef|grep -c ssh-agent`
-if [ $runningagent == "0" ];then
-    eval $(ssh-agent -s)
-fi 
+eval $(ssh-agent -s)
+
 
 if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
 	echo "ssh key not exist: /home/$USERNAME/.ssh/id_rsa"
