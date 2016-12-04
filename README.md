@@ -20,7 +20,7 @@ it is portable practice approach to integrate all portable devops tools into one
 ### the portabledevops folder structure:    
 &lt;drive&gt;:\portabledevops\  
 \* productive tools      
-qdir/   
+```qdir/   
 7z/   
 filezilla/   
 scite/                 
@@ -29,39 +29,54 @@ calibre/
 kitty/  
 putty/  
 greenshot/             
-imgburn/ 
-freecommander/ 
+imgburn/  
+freecommander/  
 brackets/ 
+```
 \* nix 
+```
 cygwin64/ 
-msys2/ 
-\* shell      
+msys2/
+```
+\* shell 
+```
 cmdermini/             
-console2/                               
-\* dev tool    
+console2/
+```
+\* dev tool
+```
 mingw64/    
 python/               
 go/                                              
 Lua/                                   
 nodejs/                
 R/                     
-ruby23/                  
-\* vm and docker tool                                             
+ruby23/
+```
+\* vm and docker tool
+```
 dockertoolbox/        
 vagrant/  
+```
 
-### portabledevops config files list  
+### portabledevops config files list 
+``` 
 /etc/profile.d/portabledevops_cygwin.sh - portable customization setting for cygwin64  
 /etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2  
 README.md - this file   
+```
 
 ## How to setup portabledevops?
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.  
 1) place the script portabledevops_xxx.sh to cygwin/msys2 /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'   
 2) add cmder task   
-`bash :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"`  
-`bash :  cmd /c "%ConEmuDir%\..\..\..\msys2\bin\bash --login -i"`  
-4) add console tab  
-`bash:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"`  
-`bash:  cmd /c "\portabledevops\msys2\bin\bash.exe --login -i"`  
+```
+cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
+msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys2\bin\bash --login -i"
+``` 
+3) add console tab  
+```
+cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
+msys2:  cmd /c "\portabledevops\msys2\bin\bash.exe --login -i"
+```
