@@ -29,11 +29,12 @@ calibre/
 kitty/  
 putty/  
 greenshot/             
-imgburn/
-freecommander/
-\* nix
-cygwin64/
-msys2/
+imgburn/ 
+freecommander/ 
+brackets/ 
+\* nix 
+cygwin64/ 
+msys2/ 
 \* shell      
 cmdermini/             
 console2/                               
@@ -50,11 +51,9 @@ dockertoolbox/
 vagrant/  
 
 ### portabledevops config files list  
-/etc/profile.d/portabledevops_cygwin.sh - portable customization setting for cygwin64
-/etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2
-rev.c - C source code for string reverse  
-/usr/bin/rev - binary for string reverse on windows  
-README.md - this file  
+/etc/profile.d/portabledevops_cygwin.sh - portable customization setting for cygwin64  
+/etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2  
+README.md - this file   
 
 ## How to setup portabledevops?
 
