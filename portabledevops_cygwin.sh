@@ -15,7 +15,7 @@ export HOMEDRIVE=$HOMEDRIVEL:
 # auto fetch portable devops tools folder, all tools under to this folder directly, 
 # for example:  L:\portabledevops\cygwin64 or L:\oldhorse\portable\cygwin64
 
-export PORTFOLDER=`cygpath -m \`pwd\`|rev|cut -d'/' -f3-|rev|cut -d: -f2-`
+export PORTFOLDER=`cygpath -m \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
 export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
 
 #
@@ -62,6 +62,12 @@ fi
 # portable docker toolbox for cygwin
 export VBOX_MSI_INSTALL_PATH=/cygdrive/c/Program_Files/Oracle/VirtualBox/
 export PATH=$VBOX_MSI_INSTALL_PATH:$PATH
+alias dm=/usr/local/bin/docker-machine.exe
+alias dc=/usr/local/bin/docker-compose.exe
+denv(){
+	eval $(docker-machine env "$@")
+}
+export -f denv
 
 # portable vagrant
 if [ -d $PORTABLEPATH/vagrant ]; then

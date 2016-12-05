@@ -7,12 +7,6 @@
 #
 # Section - env setup
 #
-if [ ! -d /home/$USERNAME ]; then
-	echo "First time to run bash, create home folder: /home/$USERNAME"
-	mkdir -p /home/$USERNAME
-fi 
-
-export HOME=/home/$USERNAME
 
 export USERPROFILE=$HOME
 export HOMEPATH=$HOME
@@ -25,7 +19,7 @@ export HOMEDRIVE=$HOMEDRIVEL:
 # auto fetch portable devops tools folder, all tools under to this folder directly, 
 # for example:  L:\portabledevops\msys2 or L:\oldhorse\portable\msys2
 
-export PORTFOLDER=`cygpath -m \`pwd\`|rev|cut -d'/' -f3-|rev|cut -d: -f2-`
+export PORTFOLDER=`cygpath -m \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
 export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
 
 #
@@ -34,6 +28,7 @@ export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
 # portable production tool
 if [ -d $PORTABLEPATH/7z ]; then
 	alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
+	export PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
 fi
 if [ -d $PORTABLEPATH/imgburn ]; then
 	alias img=$PORTABLEPATH/imgburn/ImgBurn.exe
@@ -78,6 +73,12 @@ fi
 # portable docker toolbox for msys 
 export VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
 export PATH=$VBOX_MSI_INSTALL_PATH:$PATH
+alias dm=/usr/local/bin/docker-machine.exe
+alias dc=/usr/local/bin/docker-compose.exe
+denv(){
+	eval $(docker-machine env "$@")
+}
+export -f denv
 
 # portable vagrant
 if [ -d $PORTABLEPATH/vagrant ]; then
@@ -136,10 +137,8 @@ if [ -d $PORTABLEPATH/nodejs ]; then
 	export PATH=$PORTABLEPATH/nodejs/.node_modules_global:$PATH
 fi
 
-# portable mingw64
-if [ -d $PORTABLEPATH/mingw64 ];then
-	export PATH=$PORTABLEPATH/mingw64/bin:$PATH
-fi
+# portable mingw64 on msys2
+export PATH=$PORTABLEPATH/msys64/mingw64/bin:$PATH
 
 # portable cmder and cmdermini
 if [ -d $PORTABLEPATH/cmdermini ]; then
