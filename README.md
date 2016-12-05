@@ -59,7 +59,8 @@ vagrant/
 ### portabledevops config files list 
 ``` 
 /etc/profile.d/portabledevops_cygwin.sh - portable customization setting for cygwin64  
-/etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2  
+/etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2 
+dockertoolbox.zip - collection of docker toolbox win binary files 
 README.md - this file   
 ```
 
@@ -74,12 +75,18 @@ cp portabledevops_cygwin.sh /etc/profile.d
 or
 cp portabledevops_msys.sh /etc/profile.d 
 ```
-2) add cmder task   
+2) install docker toolbox locally
+``` 
+unzip dockertoolbox.zip
+mkdir -p /usr/local/bin
+cp dockertoolbox/docker*.exe /usr/local/bin/
+```
+3) add cmder task   
 ```
 cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
 ``` 
-3) add console tab  
+4) add console tab  
 ```
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
