@@ -56,7 +56,7 @@ dockertoolbox/
 vagrant/  
 ```
 
-### portabledevops config files list 
+### portabledevops files list 
 ``` 
 /etc/profile.d/portabledevops_cygwin.sh - portable customization setting for cygwin64  
 /etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2 
@@ -80,6 +80,7 @@ cp portabledevops_msys.sh /etc/profile.d
 unzip dockertoolbox.zip
 mkdir -p /usr/local/bin
 cp dockertoolbox/docker*.exe /usr/local/bin/
+chmod +x /usr/local/bin/docker*.exe
 ```
 3) add cmder task   
 ```
