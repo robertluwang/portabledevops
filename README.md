@@ -1,6 +1,6 @@
 # portabledevops
 
-A portable devops shell env on windows, easy customization of cmder/console+cygwin/msys.
+A portable devops shell env on windows, easy customization of cmder/console+msys2/cygwin.
 
 ## Background
 
@@ -58,22 +58,19 @@ vagrant/
 
 ### portabledevops files list 
 ``` 
-/etc/profile.d/portabledevops_cygwin.sh - portable customization setting for cygwin64  
-/etc/profile.d/portabledevops_msys.sh - portable customization setting for msys2 
-dockertoolbox.zip - collection of docker toolbox win binary files 
+/etc/profile.d/portabledevops.sh - portable customization setting for msys2/cygwin64  
+dockertoolbox.zip - collection of portable docker toolbox win binary files 
 README.md - this file   
 ```
 
 ## How to setup portabledevops?
 
 It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.  
-1) place the script portabledevops_xxx.sh to cygwin/msys2 /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'  
+1) place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'  
 ```
 git clone git@github.com:robertluwang/portabledevops.git
 cd portabledevops
-cp portabledevops_cygwin.sh /etc/profile.d 
-or
-cp portabledevops_msys.sh /etc/profile.d 
+cp portabledevops.sh /etc/profile.d 
 ```
 2) install docker toolbox locally
 ``` 
@@ -84,11 +81,11 @@ chmod +x /usr/local/bin/docker*.exe
 ```
 3) add cmder task   
 ```
-cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
+cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 ``` 
 4) add console tab  
 ```
-cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
+cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ```
