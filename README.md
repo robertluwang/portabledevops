@@ -121,9 +121,6 @@ chmod +x /usr/local/bin/docker*.exe
 ```
 or run deploy script as below: 
 ```
-cd ~
-wget 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh'
-dos2unix setup.sh
-bash ./setup.sh
+cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
 ```
 
