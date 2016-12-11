@@ -68,12 +68,14 @@ README.md - this file
 ## How to setup portabledevops?
 
 It is pretty easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc. 
-1) create portabledevops root folder on USB drive, for example: 
+### create portabledevops root folder on USB drive
+for example: 
 ```
 L:\portabledevops
 ```
 
-2) make junction (directory hard link) for “Program Files”, it will make easy to find VirtualBox tools 
+### make junction (directory hard link) for “Program Files”
+it will make easy to find VirtualBox tools  
 from cmd.exe 
 ```
 mklink /j  C:\Program_Files  "C:\Program Files"
@@ -82,11 +84,11 @@ mklink /j  C:\Program_Files_x86 "C:\Program Files (x86)"
 Junction created for C:\Program_Files_x86 <<===>> C:\Program Files (x86)
 ```
 
-3) install portable shell  
+### install portable shell  
 L:\portabledevops\cmdermini  # unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases)  
 L:\portabledevops\console2   # unzip console2 from [console2 zip](https://sourceforge.net/projects/console/)   
 
-4) install portable msys2 
+### install portable msys2 
 - download msys2-x86_64-xxx.exe from [http://msys2.github.io/](http://msys2.github.io/)
 - install to default location C:\msys64
 - copy C:\msys64 to L:\portabledevops\msys64
@@ -98,7 +100,7 @@ pacman -Sy base-devel mingw-w64-x86_64-gcc python git zip unzip p7zip
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python2
 ```
 
-5) install portable cygwin64 
+### install portable cygwin64 
 - download cygwin64 from [https://www.cygwin.com/setup-x86_64.exe](https://www.cygwin.com/setup-x86_64.exe)
 - move setup-x86_64.exe to L:\portabledevops\cygdev64 folder
 - click setup-x86_64.exe
@@ -120,17 +122,17 @@ apt-cyg install git python-devel curl dos2unix zip unzip
 wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 ```
 
-6) add cmder task   
+### add cmder task   
 ```
 msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
 cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 ``` 
-7) add console tab  
+### add console tab  
 ```
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
-8) deploy portabledevops using setup.sh script    
+### deploy portabledevops using setup.sh script    
 open bash shell from cmder/console, 
 ```
 cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
