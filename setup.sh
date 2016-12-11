@@ -3,10 +3,7 @@
 # By Robert Wang
 # Usage:
 # launch msys2/cygwin bash shell from cmder or console
-# cd ~
-# wget 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh'
-# dos2unix setup.sh
-# bash ./setup.sh 
+# cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
 
 cd ~
 chmod 0700 .ssh/id_rsa
