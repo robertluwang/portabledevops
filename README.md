@@ -132,7 +132,10 @@ cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
-### deploy portabledevops using setup.sh script    
+### deploy portabledevops using setup.sh script
+- place all-in-one portable customization setting to msys2/cygwin /etc/profile.d
+- install docker toolbox locally to msys2/cygwin 
+    
 open bash shell from cmder/console, 
 ```
 cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
