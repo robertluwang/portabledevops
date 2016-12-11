@@ -1,8 +1,8 @@
+#!/usr/bin/bash 
 # portabledevops.sh
 # customized setting for msys2/cygwin64
 # By Robert Wang
-# Dec 10, 2016
-# Usage: place this portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'
+# Dec 11, 2016
 
 #
 # Section - env setup
@@ -110,6 +110,7 @@ if [ -d $PORTABLEPATH/Lua ]; then
 	export LUA_DEV=$PORTABLEPATH/Lua/5.1
 	export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
 	export PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
+	alias lua=$LUA_DEV/lua.exe
 fi
 
 # portable R

@@ -18,7 +18,8 @@ it is portable practice approach to integrate all portable devops tools into one
 ### the portabledevops folder structure:    
 &lt;drive&gt;:\portabledevops\  
 \* productive tools      
-```qdir/   
+```
+qdir/   
 7z/   
 filezilla/   
 scite/                 
@@ -58,34 +59,57 @@ vagrant/
 
 ### portabledevops files list 
 ``` 
-/etc/profile.d/portabledevops.sh - portable customization setting for msys2/cygwin64  
+/etc/profile.d/portabledevops.sh - portable all-in-one customization setting for msys2/cygwin64  
 dockertoolbox.zip - collection of portable docker toolbox win binary files 
 README.md - this file   
 ```
 
 ## How to setup portabledevops?
 
-It is extremely easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc.  
-1) place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by etc/profile when launch bash with option  '--login -i'  
+It is pretty easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc. 
+1) create portabledevops root folder on USB drive, for example:
 ```
+L:\portabledevops
+```
+2) make junction (directory hard link) for “Program Files”, it will make easy to find VirtualBox tools
+from cmd.exe 
+```
+mklink /j  C:\Program_Files  "C:\Program Files"
+Junction created for C:\Program_Files <<===>> C:\Program Files
+mklink /j  C:\Program_Files_x86 "C:\Program Files (x86)"
+Junction created for C:\Program_Files_x86 <<===>> C:\Program Files (x86)
+```
+3) install portable cmdermini/console and msys2/cygwin as below: 
+```
+L:\portabledevops\cmdermini   (unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases))
+L:\portabledevops\console2    (unzip console2 from [console2 zip](https://sourceforge.net/projects/console/))
+L:\portabledevops\msys64     (ref [Portable msys64 setup](http://dreamcloud.artark.ca/portable-msys64-setup/))
+L:\portabledevops\cygwin64   (ref [Portable cygwin64 setup](http://dreamcloud.artark.ca/portable-cygwin64-setup/))
+```
+4) add cmder task   
+```
+msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
+cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
+``` 
+5) add console tab  
+```
+msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
+cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
+``` 
+6) install all-in-one portabledevops profile script to msys2/cygwin 
+open bash shell from cmder/console, 
+```
+cd ~
+chmod 0700 .ssh/id_rsa
 git clone git@github.com:robertluwang/portabledevops.git
 cd portabledevops
-cp portabledevops.sh /etc/profile.d 
-```
-2) install docker toolbox locally
-``` 
+# place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'   
+dos2unix.exe portabledevops.sh
+cp portabledevops.sh /etc/profile.d/ 
+# install docker toolbox locally
 unzip dockertoolbox.zip
 mkdir -p /usr/local/bin
 cp dockertoolbox/docker*.exe /usr/local/bin/
 chmod +x /usr/local/bin/docker*.exe
 ```
-3) add cmder task   
-```
-msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
-cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
-``` 
-4) add console tab  
-```
-msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
-cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
-```
+
