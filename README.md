@@ -1,6 +1,6 @@
 # portabledevops
 
-A portable devops shell env on windows, easy customization of cmder/console+msys2/cygwin.
+A portable devops tool set on windows, easy customization of cmder/console+msys2/cygwin.
 
 ## Background
 
@@ -13,9 +13,9 @@ A portable devops shell env on windows, easy customization of cmder/console+msys
 [MSYS](http://www.mingw.org/wiki/MSYS) is a collection of GNU utilities such as bash, make, gawk and grep to allow building of applications and programs which depend on traditionally UNIX tools to be present. It is lightweight *NIX shell on windows. The [MSYS2](https://sourceforge.net/projects/msys2/?source=navbar) is an independent rewrite of MSYS, based on modern Cygwin (POSIX compatibility layer) and MinGW-w64 with the aim of better interoperability with native Windows software.
 
 ## What is portabledevops?
+it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk 
 
-it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk  
-### the portabledevops folder structure:    
+## portabledevops folder structure:    
 &lt;drive&gt;:\portabledevops\  
 \* productive tools      
 ```
@@ -57,10 +57,11 @@ dockertoolbox/
 vagrant/  
 ```
 
-### portabledevops files list 
+## portabledevops files list 
 ``` 
-/etc/profile.d/portabledevops.sh - portable all-in-one customization setting for msys2/cygwin64  
-dockertoolbox.zip - collection of portable docker toolbox win binary files 
+portabledevops.sh - portable all-in-one customization setting for msys2/cygwin64  
+setup.sh - portabledevops deploy script
+dockertoolbox.zip - collection of portable docker toolbox win binary files
 README.md - this file   
 ```
 
@@ -71,6 +72,7 @@ It is pretty easy, the idea is to place all portable customization in one place,
 ```
 L:\portabledevops
 ```
+
 2) make junction (directory hard link) for “Program Files”, it will make easy to find VirtualBox tools 
 from cmd.exe 
 ```
@@ -79,30 +81,56 @@ Junction created for C:\Program_Files <<===>> C:\Program Files
 mklink /j  C:\Program_Files_x86 "C:\Program Files (x86)"
 Junction created for C:\Program_Files_x86 <<===>> C:\Program Files (x86)
 ```
-3) install portable cmdermini/console and msys2/cygwin as below: 
-```
-L:\portabledevops\cmdermini    
-L:\portabledevops\console2    
-L:\portabledevops\msys64     
-L:\portabledevops\cygwin64   
-```
-setup guide:  
-cmdermini - unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases)  
-console2 - unzip console2 from [console2 zip](https://sourceforge.net/projects/console/)  
-msys64 - ref [Portable msys64 setup](http://dreamcloud.artark.ca/portable-msys64-setup/)  
-cygwin64 - ref [Portable cygwin64 setup](http://dreamcloud.artark.ca/portable-cygwin64-setup/)  
 
-4) add cmder task   
+3) install portable shell  
+L:\portabledevops\cmdermini  # unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases)  
+L:\portabledevops\console2   # unzip console2 from [console2 zip](https://sourceforge.net/projects/console/)   
+
+4) install portable msys2 
+- download msys2-x86_64-xxx.exe from [http://msys2.github.io/](http://msys2.github.io/)
+- install to default location C:\msys64
+- copy C:\msys64 to L:\portabledevops\msys64
+- uninstall msys64 from windows
+- launch msys2.exe from L:\portabledevops\msys64 folder
+- at bash shell, install necessary package for dev env on msys2 
+```
+pacman -Sy base-devel mingw-w64-x86_64-gcc python git zip unzip p7zip
+wget -qO- https://bootstrap.pypa.io/get-pip.py | python2
+```
+
+5) install portable cygwin64 
+- download cygwin64 from [https://www.cygwin.com/setup-x86_64.exe](https://www.cygwin.com/setup-x86_64.exe)
+- move setup-x86_64.exe to L:\portabledevops\cygdev64 folder
+- click setup-x86_64.exe
+only install wget, choice install folder and package folder to L:\portabledevops\cygdev64,it will install cygwin 64 core package. 
+- click Cygwin.bat to launch cygwin bash shell
+- install apt-cyg
+```
+wget raw.github.com/transcode-open/apt-cyg/master/apt-cyg
+chmod +x apt-cyg
+mv apt-cyg /usr/local/bin
+which -a apt-cyg
+```
+- install git, python-devel, gcc-g++, curl, dos2unix, zip, unzip 
+```
+apt-cyg install git python-devel curl dos2unix zip unzip
+```
+- install pip
+```
+wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
+```
+
+6) add cmder task   
 ```
 msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
 cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 ``` 
-5) add console tab  
+7) add console tab  
 ```
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
-6) deploy portabledevops using setup.sh script    
+8) deploy portabledevops using setup.sh script    
 open bash shell from cmder/console, 
 ```
 cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
