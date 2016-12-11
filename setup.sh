@@ -4,9 +4,9 @@
 # Usage:
 # launch msys2/cygwin bash shell from cmder or console
 # cd ~
-# wget https://github.com/robertluwang/portabledevops/blob/master/setup.sh
+# wget 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh'
 # dos2unix setup.sh
-# run ./setup.sh 
+# bash ./setup.sh 
 
 cd ~
 chmod 0700 .ssh/id_rsa
@@ -20,9 +20,11 @@ git clone git@github.com:robertluwang/portabledevops.git
 cd portabledevops
 # place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'   
 dos2unix.exe portabledevops.sh
+echo cp portabledevops.sh /etc/profile.d/
 cp portabledevops.sh /etc/profile.d/ 
 # install docker toolbox locally
 unzip dockertoolbox.zip
 mkdir -p /usr/local/bin
+echo cp dockertoolbox/docker*.exe /usr/local/bin/
 cp dockertoolbox/docker*.exe /usr/local/bin/
 chmod +x /usr/local/bin/docker*.exe
