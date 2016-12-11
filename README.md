@@ -107,15 +107,23 @@ open bash shell from cmder/console,
 ```
 cd ~
 chmod 0700 .ssh/id_rsa
+rm -r ~/portabledevops
 git clone git@github.com:robertluwang/portabledevops.git
 cd portabledevops
 # place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'   
-dos2unix.exe portabledevops.sh
+dos2unix portabledevops.sh
 cp portabledevops.sh /etc/profile.d/ 
 # install docker toolbox locally
 unzip dockertoolbox.zip
 mkdir -p /usr/local/bin
 cp dockertoolbox/docker*.exe /usr/local/bin/
 chmod +x /usr/local/bin/docker*.exe
+```
+or run deploy script as below: 
+```
+cd ~
+wget https://github.com/robertluwang/portabledevops/blob/master/setup.sh
+dos2unix setup.sh
+./setup.sh
 ```
 
