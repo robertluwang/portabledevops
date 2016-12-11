@@ -67,11 +67,11 @@ README.md - this file
 ## How to setup portabledevops?
 
 It is pretty easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc. 
-1) create portabledevops root folder on USB drive, for example:
+1) create portabledevops root folder on USB drive, for example: 
 ```
 L:\portabledevops
 ```
-2) make junction (directory hard link) for “Program Files”, it will make easy to find VirtualBox tools
+2) make junction (directory hard link) for “Program Files”, it will make easy to find VirtualBox tools 
 from cmd.exe 
 ```
 mklink /j  C:\Program_Files  "C:\Program Files"
@@ -81,11 +81,16 @@ Junction created for C:\Program_Files_x86 <<===>> C:\Program Files (x86)
 ```
 3) install portable cmdermini/console and msys2/cygwin as below: 
 ```
-L:\portabledevops\cmdermini   (unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases))
-L:\portabledevops\console2    (unzip console2 from [console2 zip](https://sourceforge.net/projects/console/))
-L:\portabledevops\msys64     (ref [Portable msys64 setup](http://dreamcloud.artark.ca/portable-msys64-setup/))
-L:\portabledevops\cygwin64   (ref [Portable cygwin64 setup](http://dreamcloud.artark.ca/portable-cygwin64-setup/))
+L:\portabledevops\cmdermini    
+L:\portabledevops\console2    
+L:\portabledevops\msys64     
+L:\portabledevops\cygwin64   
 ```
+setup guide:  
+cmdermini - unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases)  
+console2 - unzip console2 from [console2 zip](https://sourceforge.net/projects/console/)  
+msys64 - ref [Portable msys64 setup](http://dreamcloud.artark.ca/portable-msys64-setup/)  
+cygwin64 - ref [Portable cygwin64 setup](http://dreamcloud.artark.ca/portable-cygwin64-setup/)  
 4) add cmder task   
 ```
 msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
@@ -96,7 +101,7 @@ cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
-6) install all-in-one portabledevops profile script to msys2/cygwin 
+6) install all-in-one portabledevops profile script to msys2/cygwin  
 open bash shell from cmder/console, 
 ```
 cd ~
