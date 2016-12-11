@@ -91,6 +91,7 @@ cmdermini - unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cm
 console2 - unzip console2 from [console2 zip](https://sourceforge.net/projects/console/)  
 msys64 - ref [Portable msys64 setup](http://dreamcloud.artark.ca/portable-msys64-setup/)  
 cygwin64 - ref [Portable cygwin64 setup](http://dreamcloud.artark.ca/portable-cygwin64-setup/)  
+
 4) add cmder task   
 ```
 msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
