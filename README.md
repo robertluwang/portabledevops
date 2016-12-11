@@ -102,24 +102,8 @@ cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
-6) install all-in-one portabledevops profile script to msys2/cygwin  
+6) deploy portabledevops using setup.sh script    
 open bash shell from cmder/console, 
-```
-cd ~
-chmod 0700 .ssh/id_rsa
-rm -r ~/portabledevops
-git clone git@github.com:robertluwang/portabledevops.git
-cd portabledevops
-# place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'   
-dos2unix portabledevops.sh
-cp portabledevops.sh /etc/profile.d/ 
-# install docker toolbox locally
-unzip dockertoolbox.zip
-mkdir -p /usr/local/bin
-cp dockertoolbox/docker*.exe /usr/local/bin/
-chmod +x /usr/local/bin/docker*.exe
-```
-or run deploy script as below: 
 ```
 cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
 ```
