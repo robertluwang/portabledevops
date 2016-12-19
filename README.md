@@ -15,7 +15,7 @@ A portable devops tool set on windows, easy customization of cmder/console+msys2
 ## What is portabledevops?
 it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk 
 
-## portabledevops folder structure:    
+## portabledevops folder structure sample: 
 &lt;drive&gt;:\portabledevops\  
 \* productive tools      
 ```
@@ -85,8 +85,8 @@ Junction created for C:\Program_Files_x86 <<===>> C:\Program Files (x86)
 ```
 
 ### install portable shell  
-L:\portabledevops\cmdermini  # unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases)  
-L:\portabledevops\console2   # unzip console2 from [console2 zip](https://sourceforge.net/projects/console/)   
+L:\portabledevops\cmdermini - download and unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases) to this folder
+L:\portabledevops\console2  - download and unzip console2 from [console2 zip](https://sourceforge.net/projects/console/) to this folder
 
 ### install portable msys2 
 - download msys2-x86_64-xxx.exe from [http://msys2.github.io/](http://msys2.github.io/)
@@ -124,12 +124,12 @@ wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 
 ### add cmder task   
 ```
-msys2 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
+msys64 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
 cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
 ``` 
 ### add console tab  
 ```
-msys2:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
+msys64:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
 ### deploy portabledevops using setup.sh script

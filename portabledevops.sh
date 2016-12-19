@@ -2,12 +2,12 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64
 # By Robert Wang
-# Dec 11, 2016
+# Dec 19, 2016
 
 #
 # Section - env setup
 #
-
+# this is important steps for portable, please don't touch it !!!
 export PORTSYS=`uname|cut -d'_' -f1`
 
 if [ $PORTSYS = 'MSYS' ]; then
@@ -30,6 +30,8 @@ fi
 #
 # Section - portable application setup 
 #
+# pre-define some common used tools (alias and env), you can customize them depending on your own needs
+
 # portable production tool
 if [ -d $PORTABLEPATH/7z ]; then
 	alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
@@ -197,7 +199,11 @@ fi
 alias nmpstart='source $PORTABLEPATH/nginx/nmp_start.sh'
 alias nmpstop='source $PORTABLEPATH/nginx/nmp_stop.sh'
 
-# ssh-agent
+# 
+# Section - ssh agent
+#
+# it makes you easy life to ssh to github or any remote ssh server without specific ssh key path 
+# please comment out this sesion if you don't need
 eval $(ssh-agent -s)
  
 if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
@@ -207,6 +213,8 @@ else
 	ssh-add /home/$USERNAME/.ssh/id_rsa
 fi 
 
-# common alias
+#
+# Section - common alias
+#
 alias ll='ls -ltra'
 alias pwdw='cygpath -m `pwd`'
