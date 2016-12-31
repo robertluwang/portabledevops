@@ -59,7 +59,8 @@ vagrant/
 
 ## portabledevops files list 
 ``` 
-portabledevops.sh - portable all-in-one customization setting for msys2/cygwin64  
+portabledevops.sh - mini portable all-in-one customization setting for msys2/cygwin64
+portabledevops.sh.ref - long version of portabledevops.sh   
 setup.sh - portabledevops deploy script
 dockertoolbox.zip - collection of portable docker toolbox win binary files
 README.md - this file   
@@ -102,9 +103,9 @@ wget -qO- https://bootstrap.pypa.io/get-pip.py | python2
 
 ### install portable cygwin64 
 - download cygwin64 from [https://www.cygwin.com/setup-x86_64.exe](https://www.cygwin.com/setup-x86_64.exe)
-- move setup-x86_64.exe to L:\portabledevops\cygdev64 folder
+- move setup-x86_64.exe to L:\portabledevops\cygwin64 folder
 - click setup-x86_64.exe
-only install wget, choice install folder and package folder to L:\portabledevops\cygdev64,it will install cygwin 64 core package. 
+only install wget, choice install folder and package folder to L:\portabledevops\cygwin64,it will install cygwin 64 core package. 
 - click Cygwin.bat to launch cygwin bash shell
 - install apt-cyg
 ```
@@ -124,12 +125,12 @@ wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 
 ### add cmder task   
 ```
-msys64 :  cmd /c "%ConEmuDir%\..\..\..\msys64\bin\bash --login -i"
-cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i"
+msys64 :  set MSYS2_PATH_TYPE=inherit & cmd /c "%ConEmuDir%\..\..\..\msys64\usr\bin\bash --login -i"
+cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i -new_console:C:"%ConEmuDir%\..\..\..\cygwin64\Cygwin.ico"
 ``` 
 ### add console tab  
 ```
-msys64:  cmd /c "\portabledevops\msys64\bin\bash.exe --login -i"
+msys64:  cmd /c "\portabledevops\msys64\usr\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
 ### deploy portabledevops using setup.sh script
