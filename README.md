@@ -17,44 +17,29 @@ it is portable practice approach to integrate all portable devops tools into one
 
 ## portabledevops folder structure sample: 
 &lt;drive&gt;:\portabledevops\  
-\* productive tools      
+* productive tools      
 ```
 qdir/   
 7z/   
 filezilla/   
 scite/                 
 sublimetext3/  
-calibre/  
 kitty/  
 putty/  
-greenshot/             
-imgburn/  
-freecommander/  
-brackets/ 
 ```
-\* nix 
+* nix 
 ```
 cygwin64/ 
 msys64/
 ```
-\* shell 
+* shell 
 ```
 cmdermini/             
 console2/
 ```
-\* dev tool
-```    
-python/               
-go/                                              
-Lua/                                   
-nodejs/                
-R/                     
-ruby23/
-```
-\* vm and docker tool
+* vm and docker tool
 ```
 dockertoolbox/        
-vagrant/  
 ```
 
 ## portabledevops files list 
@@ -133,12 +118,47 @@ cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i -new_conso
 msys64:  cmd /c "\portabledevops\msys64\usr\bin\bash.exe --login -i"
 cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
 ``` 
-### deploy portabledevops using setup.sh script
-- place all-in-one portable customization setting to msys2/cygwin /etc/profile.d
-- install docker toolbox locally to msys2/cygwin 
-    
-open bash shell from cmder/console, 
+### git setup
+* start cmder bash shell 
+``` 
+launch cmder by double click Cmder.exe under cmdermini/ folder 
+launch msys64 task from right-bottom menu 
 ```
+similar for console2 bash shell
+* git user/email setup 
+```
+$ git config --global user.name <username>
+$ git config --global user.email <email for git>
+verify:
+$ git config --global --list
+```
+* generate ssh key 
+```
+$ ssh-keygen -t rsa -C "<email for git>"
+empty for passphrase
+will generate private ssh key: /home/<username>/.ssh/id_rsa, public key: /home/<username>/.ssh/id_rsa.pub 
+```
+* add private key to ssh agent 
+```
+$ eval $(ssh-agent -s)
+$ ssh-add /home/<username>/.ssh/id_rsa
+```
+* upload id_rsa.pub to github account Settings
+```
+copy content of id_rsa.pub to clipboard: 
+$ cat /home/<username>/.ssh/id_rsa.pub 
+click github Settings/"SSH and GPG keys"/"Add SSH key" button:
+paste to Key field, give the Title name, then click "Add SSH key" button.
+```
+* verify ssh connection to github
+```
+$ ssh -T git@github.com
+```
+### deploy portabledevops using setup.sh script
+* place all-in-one portable customization setting to msys2/cygwin /etc/profile.d
+* install docker toolbox locally to msys2/cygwin 
+```
+run below one line command from cmder or console2 bash shell,
 cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
 ```
 
