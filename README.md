@@ -25,7 +25,6 @@ filezilla/
 scite/                 
 sublimetext3/  
 kitty/  
-putty/  
 ```
 * nix 
 ```
