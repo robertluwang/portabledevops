@@ -100,7 +100,7 @@ which -a apt-cyg
 ```
 - install git, python-devel, gcc-g++, curl, dos2unix, zip, unzip 
 ```
-apt-cyg install git python-devel curl dos2unix zip unzip
+apt-cyg install git python-devel gcc-g++ curl dos2unix zip unzip
 ```
 - install pip
 ```
