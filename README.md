@@ -126,8 +126,8 @@ launch msys64 task from right-bottom menu
 similar for console2 bash shell
 * git user/email setup 
 ```
-$ git config --global user.name <username>
-$ git config --global user.email <email for git>
+$ git config --global user.name "<username>"
+$ git config --global user.email "<email for git>"
 verify:
 $ git config --global --list
 ```
