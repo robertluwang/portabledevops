@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64
 # By Robert Wang
-# Dec 11, 2016
+# Oct 2nd 2017
 
 #
 # Section - env setup
@@ -20,7 +20,7 @@ cd $HOME
 export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
 export HOMEDRIVE=$HOMEDRIVEL:
 
-# cover mobaxterm
+# portable mobaxterm, change persistent folder for root to <mobaxterm>/root , copy this portabledevops.sh to <mobaxterm>/root/etc/profile.d/ 
 
 if [  `env|grep MOBANOACL` ]; then
 	export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f3-|rev|cut -d: -f2-`
