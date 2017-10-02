@@ -1,13 +1,13 @@
 #!/usr/bin/bash 
 # portabledevops.sh
-# mini customized setting for msys2/cygwin64
+# customized setting for msys2/cygwin64
 # By Robert Wang
-# Dec 31, 2016
+# Dec 11, 2016
 
 #
 # Section - env setup
 #
-# this is important steps for portable, please don't touch it !!!
+
 export PORTSYS=`uname|cut -d'_' -f1`
 
 if [ $PORTSYS = 'MSYS' ]; then
@@ -19,7 +19,14 @@ cd $HOME
 
 export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
 export HOMEDRIVE=$HOMEDRIVEL:
-export PORTFOLDER=`cygpath -m \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+
+# cover mobaxterm
+
+if [  `env|grep MOBANOACL` ]; then
+	export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f3-|rev|cut -d: -f2-`
+else 
+	export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+fi 
 
 if [ $PORTSYS = 'CYGWIN' ]; then
     export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
@@ -30,12 +37,13 @@ fi
 #
 # Section - portable application setup 
 #
-# pre-define some common used tools (alias and env), you can customize them depending on your own needs
-
 # portable production tool
 if [ -d $PORTABLEPATH/7z ]; then
 	alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
 	export PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
+fi
+if [ -d $PORTABLEPATH/imgburn ]; then
+	alias img=$PORTABLEPATH/imgburn/ImgBurn.exe
 fi
 if [ -d $PORTABLEPATH/filezilla ]; then
 	alias fzp=$PORTABLEPATH/filezilla/FileZillaPortable.exe
@@ -52,11 +60,26 @@ fi
 if [ -d $PORTABLEPATH/markdownpad2 ]; then
 	alias mp=$PORTABLEPATH/markdownpad2/MarkdownPad2.exe
 fi
+if [ -d $PORTABLEPATH/greenshot ]; then
+	alias gshot=$PORTABLEPATH/greenshot/Greenshot.exe
+fi
 if [ -d $PORTABLEPATH/kitty ]; then
 	alias kitty=$PORTABLEPATH/kitty/kitty_portable.exe
 fi
 if [ -d $PORTABLEPATH/putty ]; then
 	alias putty=$PORTABLEPATH/putty/putty.exe
+fi
+if [ -d $PORTABLEPATH/freecommander ]; then
+	alias fc=$PORTABLEPATH/freecommander/FreeCommanderPortable.exe
+fi
+if [ -d $PORTABLEPATH/brackets ]; then
+	alias bk=$PORTABLEPATH/brackets/BracketsPortable.exe
+fi
+
+# portable calibre tool
+if [ -d $PORTABLEPATH/calibre ]; then
+	export PATH=$PORTABLEPATH/calibre/Calibre:$PATH
+	alias calibrep=$PORTABLEPATH/calibre/calibre-portable.exe
 fi
 
 # portable docker toolbox 
@@ -66,13 +89,76 @@ else
     export VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
 fi 
 
-export PATH=$VBOX_MSI_INSTALL_PATH:$PATH
+export PATH=$VBOX_MSI_INSTALL_PATH:/usr/local/bin:$PATH
 alias dm=/usr/local/bin/docker-machine.exe
 alias dc=/usr/local/bin/docker-compose.exe
 denv(){
 	eval $(docker-machine env "$@")
 }
 export -f denv
+
+# portable vagrant
+if [ -d $PORTABLEPATH/vagrant ]; then
+	export PATH=$PORTABLEPATH/vagrant/bin:$PATH
+fi
+
+# portable netsnmp
+if [ -d $PORTABLEPATH/netsnmp ]; then
+	export PATH=$PORTABLEPATH/netsnmp/usr/bin:$PATH
+fi
+
+# portable Golang
+if [ -d $PORTABLEPATH/go ]; then
+	export GOROOT=$PORTABLEPATH/go
+	if [ ! -d $HOME/testgo ]; then
+		mkdir -p $HOME/testgo
+	fi 
+	export GOPATH=$HOME/testgo
+	export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+fi
+
+# portable Lua
+if [ -d $PORTABLEPATH/Lua ]; then
+	export LUA_DEV=$PORTABLEPATH/Lua/5.1
+	export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
+	export PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
+	alias lua=$LUA_DEV/lua.exe
+fi
+
+# portable R
+if [ -d $PORTABLEPATH/R ]; then
+	export PATH=$PORTABLEPATH/R/R-3.3.1/bin/x64:$PATH
+fi
+
+# portable ruby
+if [ -d $PORTABLEPATH/ruby23 ]; then
+	export PATH=$PORTABLEPATH/ruby23/bin:$PATH
+fi
+
+# portable nodejs
+if [ -d $PORTABLEPATH/nodejs ]; then
+	export PATH=$PORTABLEPATH/nodejs:$PATH
+
+	if [ ! -d $PORTABLEPATH/nodejs/.node_modules_global ]; then
+		echo "First time to create npm modules global: $PORTABLEPATH/nodejs/.node_modules_global"
+		mkdir -p $PORTABLEPATH/nodejs/.node_modules_global
+	fi
+	$PORTABLEPATH/nodejs/npm config set prefix=$PORTABLEPATH/nodejs/.node_modules_global
+
+	if [ ! -d $PORTABLEPATH/nodejs/npm-cache ]; then
+		echo "First time to create npm-cache: $PORTABLEPATH/nodejs/npm-cache"
+		mkdir -p $PORTABLEPATH/nodejs/npm-cache
+	fi
+	$PORTABLEPATH/nodejs/npm config set cache=$PORTABLEPATH/nodejs/npm-cache
+
+	if [ ! -d $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp ]; then
+		echo "First time to create tmp: $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp"
+		mkdir -p $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp
+	fi
+	$PORTABLEPATH/nodejs/npm config set tmp=$PORTABLEPATH/home/$USERNAME/AppData/Local/Temp
+
+	export PATH=$PORTABLEPATH/nodejs/.node_modules_global:$PATH
+fi
 
 # portable mingw64 on msys2
 if [ $PORTSYS = 'MSYS' ];then
@@ -89,11 +175,45 @@ if [ -d $PORTABLEPATH/console2 ]; then
 	alias console=$PORTABLEPATH/console2/Console.exe
 fi 
 
-# 
-# Section - ssh agent
-#
-# it makes you easy life to ssh to github or any remote ssh server without specific ssh key path 
-# please comment out this sesion if you don't need
+# portable gitbook editor
+if [ -d $PORTABLEPATH/gitbookeditor ]; then
+	export PATH=$PORTABLEPATH/gitbookeditor/app-6.2.1:$PATH
+	alias gitbooked='cd $PORTABLEPATH/gitbookeditor/app-6.2.1;echo $HOME;$PORTABLEPATH/gitbookeditor/Update.exe --processStart Editor.exe'
+fi
+
+# portable nginx 
+if [ -d $PORTABLEPATH/nginx ]; then
+	export PATH=$PORTABLEPATH/nginx:$PATH
+	alias nginxstart='cd $PORTABLEPATH/nginx; ./nginx'
+	alias nginxstop='cd $PORTABLEPATH/nginx; ./nginx -s stop'
+	alias nmpstart='source $PORTABLEPATH/nginx/nmp_start.sh'
+	alias nmpstop='source $PORTABLEPATH/nginx/nmp_stop.sh'
+fi
+
+# portable php
+if [ -d $PORTABLEPATH/php ]; then
+	export PATH=$PORTABLEPATH/php:$PATH
+	alias phpcgi='cd $PORTABLEPATH/php; ./php-cgi -b 127.0.0.1:9000 -c ./php.ini'
+fi
+
+# portable mysql
+if [ -d $PORTABLEPATH/mysql ]; then
+	export PATH=$PORTABLEPATH/mysql/bin:$PATH
+	alias mysqldstart='cd $PORTABLEPATH/mysql/bin; ./mysqld --console'
+	alias mysqldstop='mysqladmin shutdown -u root -p'
+fi
+
+# portable redis
+if [ -d $PORTABLEPATH/redis ]; then
+	export PATH=$PORTABLEPATH/redis:$PATH
+fi
+
+# portable wkhtmltopdf
+if [ -d $PORTABLEPATH/wkhtmltopdf ]; then
+	export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
+fi
+
+# ssh-agent
 eval $(ssh-agent -s)
  
 if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
@@ -103,8 +223,6 @@ else
 	ssh-add /home/$USERNAME/.ssh/id_rsa
 fi 
 
-#
-# Section - common alias
-#
+# common alias
 alias ll='ls -ltra'
-alias pwdw='cygpath -m `pwd`'
+alias pwdw='cygpath -ml `pwd`'
