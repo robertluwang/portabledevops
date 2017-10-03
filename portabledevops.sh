@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64
 # By Robert Wang
-# Oct 2nd 2017
+# Oct 3rd 2017
 
 #
 # Section - env setup
@@ -15,18 +15,16 @@ if [ $PORTSYS = 'MSYS' ]; then
 	export HOMEPATH=$HOME
 fi 
 
-cd $HOME
-
-export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
-export HOMEDRIVE=$HOMEDRIVEL:
-
 # portable mobaxterm, change persistent folder for root to <mobaxterm>/root , copy this portabledevops.sh to <mobaxterm>/root/etc/profile.d/ 
 
 if [  `env|grep MOBANOACL` ]; then
-	export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f3-|rev|cut -d: -f2-`
+	export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
+	export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
 else 
 	export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+	export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
 fi 
+export HOMEDRIVE=$HOMEDRIVEL:
 
 if [ $PORTSYS = 'CYGWIN' ]; then
     export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
@@ -133,31 +131,6 @@ fi
 # portable ruby
 if [ -d $PORTABLEPATH/ruby23 ]; then
 	export PATH=$PORTABLEPATH/ruby23/bin:$PATH
-fi
-
-# portable nodejs
-if [ -d $PORTABLEPATH/nodejs ]; then
-	export PATH=$PORTABLEPATH/nodejs:$PATH
-
-	if [ ! -d $PORTABLEPATH/nodejs/.node_modules_global ]; then
-		echo "First time to create npm modules global: $PORTABLEPATH/nodejs/.node_modules_global"
-		mkdir -p $PORTABLEPATH/nodejs/.node_modules_global
-	fi
-	$PORTABLEPATH/nodejs/npm config set prefix=$PORTABLEPATH/nodejs/.node_modules_global
-
-	if [ ! -d $PORTABLEPATH/nodejs/npm-cache ]; then
-		echo "First time to create npm-cache: $PORTABLEPATH/nodejs/npm-cache"
-		mkdir -p $PORTABLEPATH/nodejs/npm-cache
-	fi
-	$PORTABLEPATH/nodejs/npm config set cache=$PORTABLEPATH/nodejs/npm-cache
-
-	if [ ! -d $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp ]; then
-		echo "First time to create tmp: $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp"
-		mkdir -p $PORTABLEPATH/home/$USERNAME/AppData/Local/Temp
-	fi
-	$PORTABLEPATH/nodejs/npm config set tmp=$PORTABLEPATH/home/$USERNAME/AppData/Local/Temp
-
-	export PATH=$PORTABLEPATH/nodejs/.node_modules_global:$PATH
 fi
 
 # portable mingw64 on msys2
