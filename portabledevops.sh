@@ -95,6 +95,27 @@ denv(){
 }
 export -f denv
 
+# directly ssh to docker vm when docker-machine env not working well
+dmssh(){
+    sshport=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep ssh |awk -F',' '{print $4}'|awk -F'=' '{print $2}'`
+    sshkeywinpath=`dm inspect "$1"|grep SSHKeyPath|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
+    sshkeycygpath=`cygpath -ml $sshkeywinpath`
+    sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
+    sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
+    if [ $PORTSYS = 'CYGWIN' ]; then
+    	sshkey='/cygdrive/'$sshkeydrive$sshkeypath
+    else
+    	sshkey='/'$sshkeydrive$sshkeypath
+    fi
+
+    shift
+    ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no docker@127.0.0.1 -o IdentitiesOnly=yes -i $sshkey -p $sshport "$@"
+}
+export -f dmssh
+
+# alias for Go native ssh when local ssh client not working
+alias nassh='dm --native-ssh ssh'
+
 # portable vagrant
 if [ -d $PORTABLEPATH/vagrant ]; then
 	export PATH=$PORTABLEPATH/vagrant/bin:$PATH
