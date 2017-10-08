@@ -35,7 +35,7 @@ git clone git@github.com:robertluwang/portabledevops.git
 cd portabledevops
 # place the script portabledevops.sh to msys2/cygwin64 /etc/profile.d folder, will be sourced by /etc/profile when launch bash with option  '--login -i'
 dos2unix.exe portabledevops.sh
-echo cp portabledevops.sh /etc/profile.d/
+echo cp portabledevops.sh to /etc/profile.d/
 cp portabledevops.sh /etc/profile.d/
 
 unzip dockertoolbox.zip
@@ -45,6 +45,6 @@ if [ ! -d $PORTABLEPATH/dockertoolbox ];then
     mkdir $PORTABLEPATH/dockertoolbox
 fi
 
-echo cp dockertoolbox/*  $PORTABLEPATH/dockertoolbox
+echo cp dockertoolbox/*  to $PORTABLEPATH/dockertoolbox
 cp dockertoolbox/*  $PORTABLEPATH/dockertoolbox
 chmod +x $PORTABLEPATH/dockertoolbox/*.exe
