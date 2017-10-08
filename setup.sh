@@ -3,7 +3,7 @@
 # By Robert Wang
 # Oct 8th, 2017
 # Usage:
-# launch msys2/cygwin bash shell from cmder or console
+# launch msys2/cygwin/mobaxterm bash shell
 # cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
 
 export PORTSYS=`uname|cut -d'_' -f1`
