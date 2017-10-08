@@ -1,8 +1,8 @@
 #!/usr/bin/bash 
 # portabledevops.sh
-# customized setting for msys2/cygwin64
+# customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 3rd 2017
+# Oct 8th 2017
 
 #
 # Section - env setup
@@ -80,41 +80,49 @@ if [ -d $PORTABLEPATH/calibre ]; then
 	alias calibrep=$PORTABLEPATH/calibre/calibre-portable.exe
 fi
 
-# portable docker toolbox 
+# setup VirtualBox path 
 if [ $PORTSYS = 'CYGWIN' ];then 
     export VBOX_MSI_INSTALL_PATH=/cygdrive/c/Program_Files/Oracle/VirtualBox/
 else
     export VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
 fi 
 
-export PATH=$VBOX_MSI_INSTALL_PATH:/usr/local/bin:$PATH
-alias dm=/usr/local/bin/docker-machine.exe
-alias dc=/usr/local/bin/docker-compose.exe
-denv(){
-	eval $(docker-machine env "$@")
-}
-export -f denv
+export PATH=$VBOX_MSI_INSTALL_PATH:$PATH
 
-# directly ssh to docker vm when docker-machine env not working well
-dmssh(){
-    sshport=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep ssh |awk -F',' '{print $4}'|awk -F'=' '{print $2}'`
-    sshkeywinpath=`dm inspect "$1"|grep SSHKeyPath|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
-    sshkeycygpath=`cygpath -ml $sshkeywinpath`
-    sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
-    sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
-    if [ $PORTSYS = 'CYGWIN' ]; then
-    	sshkey='/cygdrive/'$sshkeydrive$sshkeypath
-    else
-    	sshkey='/'$sshkeydrive$sshkeypath
-    fi
+# portable docker toolbox
+if [ -d $PORTABLEPATH/dockertoolbox ]; then
+    export PATH=$PORTABLEPATH/dockertoolbox:$PATH
+    alias dm=$PORTABLEPATH/dockertoolbox/docker-machine.exe
+    alias dc=$PORTABLEPATH/dockertoolbox/docker-compose.exe
 
-    shift
-    ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no docker@127.0.0.1 -o IdentitiesOnly=yes -i $sshkey -p $sshport "$@"
-}
-export -f dmssh
+    # function to setup env for docker vm host
+    denv(){
+	   eval $(dm env "$@")
+    }
+    export -f denv
 
-# alias for Go native ssh when local ssh client not working
-alias nassh='dm --native-ssh ssh'
+    # directly ssh to docker vm when docker-machine env not working well
+    dmssh(){
+        sshport=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep ssh |awk -F',' '{print $4}'|awk -F'=' '{print $2}'`
+        sshkeywinpath=`dm inspect "$1"|grep SSHKeyPath|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
+        sshkeycygpath=`cygpath -ml $sshkeywinpath`
+        sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
+        sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
+        if [ $PORTSYS = 'CYGWIN' ]; then
+    	   sshkey='/cygdrive/'$sshkeydrive$sshkeypath
+        else
+    	   sshkey='/'$sshkeydrive$sshkeypath
+        fi
+
+        shift
+        ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no docker@127.0.0.1 -o IdentitiesOnly=yes -i $sshkey -p $sshport "$@"
+    }
+    export -f dmssh
+
+    # alias for Go native ssh when local ssh client not working
+    alias nassh='dm --native-ssh ssh'
+
+fi
 
 # portable vagrant
 if [ -d $PORTABLEPATH/vagrant ]; then
