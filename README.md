@@ -114,8 +114,8 @@ wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 - download mobaxterm from [https://mobaxterm.mobatek.net](https://mobaxterm.mobatek.net/download.html)
 - move mobaxterm folder to L:\portabledevops\
 - launch MobaXterm.exe, click Setting->General
-- change persistent root(/) directory to <mobaxterm>/root
-- change home directory to <mobaxterm>/home or C:\Users\<username>
+- change persistent root(/) directory to mobaxterm/root
+- change home directory to mobaxterm/home or _ProfileDir_ (C:\Users\USERNAME)
 - install git, dos2unix zip
 ```
 apt-cyg install git dos2unix zip
