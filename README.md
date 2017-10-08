@@ -1,6 +1,6 @@
 # portabledevops
 
-A portable devops tool set on windows, easy customization of cmder/console+msys2/cygwin.
+A portable devops tool set on windows, easy customization of cmder/console+msys2/cygwin/mobaxterm.
 
 ## Background
 
@@ -9,6 +9,8 @@ A portable devops tool set on windows, easy customization of cmder/console+msys2
 [Console](https://sourceforge.net/projects/console/) is another lightweight windows console enhancement, supports multi-tabs.
 
 [Cygwin](https://cygwin.com/) is a large collection of GNU and Open Source tools which provide functionality similar to a Linux distribution on Windows, also provides substantial POSIX API functionality.
+
+[MobaXterm](https://mobaxterm.mobatek.net/) provides all the important remote network tools (SSH, X11, RDP, VNC, FTP, MOSH, ...) and Unix commands (bash, ls, cat, sed, grep, awk, rsync, ...) to Windows desktop, in a single portable exe file. The Unix commands are from cygwin but little bit customized.
 
 [MSYS](http://www.mingw.org/wiki/MSYS) is a collection of GNU utilities such as bash, make, gawk and grep to allow building of applications and programs which depend on traditionally UNIX tools to be present. It is lightweight *NIX shell on windows. The [MSYS2](https://sourceforge.net/projects/msys2/?source=navbar) is an independent rewrite of MSYS, based on modern Cygwin (POSIX compatibility layer) and MinGW-w64 with the aim of better interoperability with native Windows software.
 
@@ -30,6 +32,7 @@ kitty/
 ```
 cygwin64/ 
 msys64/
+mobaxterm/
 ```
 * shell 
 ```
@@ -107,6 +110,20 @@ apt-cyg install git python-devel gcc-g++ curl dos2unix zip unzip
 wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 ```
 
+### install portable mobaxterm
+- download mobaxterm from [https://mobaxterm.mobatek.net](https://mobaxterm.mobatek.net/download.html)
+- move mobaxterm folder to L:\portabledevops\
+- launch MobaXterm.exe, click Setting->General
+- change persistent root(/) directory to <mobaxterm>/root
+- change home directory to <mobaxterm>/home or C:\Users\<username>
+- install git, dos2unix zip
+```
+apt-cyg install git dos2unix zip
+```
+- install pip
+```
+wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
+```
 ### add cmder task   
 ```
 msys64 :  set MSYS2_PATH_TYPE=inherit & cmd /c "%ConEmuDir%\..\..\..\msys64\usr\bin\bash --login -i"
@@ -154,10 +171,10 @@ paste to Key field, give the Title name, then click "Add SSH key" button.
 $ ssh -T git@github.com
 ```
 ### deploy portabledevops using setup.sh script
-* place all-in-one portable customization setting to msys2/cygwin /etc/profile.d
-* install docker toolbox locally to msys2/cygwin 
+* place all-in-one portable customization setting to msys2/cygwin/mobaxterm /etc/profile.d
+* install updated portable docker toolbox
 ```
-run below one line command from cmder or console2 bash shell,
+run below one line command from cmder/console2/mobaxterm terminal bash shell,
 cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
 ```
 
