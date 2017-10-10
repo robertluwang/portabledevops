@@ -10,10 +10,16 @@
 
 export PORTSYS=`uname|cut -d'_' -f1`
 
-if [ $PORTSYS = 'MSYS' ]; then
+if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]; then
+    if [ ! -d /home/$USERNAME ]; then
+        mkdir -p /home/$USERNAME
+    fi
+    HOME=/home/$USERNAME
 	export USERPROFILE=$HOME
 	export HOMEPATH=$HOME
 fi 
+
+cd $HOME
 
 # portable mobaxterm, change persistent folder for root to <mobaxterm>/root , copy this portabledevops.sh to <mobaxterm>/root/etc/profile.d/ 
 
