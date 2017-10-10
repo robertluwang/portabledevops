@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 8th 2017
+# Oct 10, 2017
 
 #
 # Section - env setup
@@ -15,8 +15,8 @@ if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]
         mkdir -p /home/$USERNAME
     fi
     HOME=/home/$USERNAME
-	export USERPROFILE=$HOME
-	export HOMEPATH=$HOME
+    export USERPROFILE=$HOME
+    export HOMEPATH=$HOME
 fi 
 
 cd $HOME
@@ -24,11 +24,11 @@ cd $HOME
 # portable mobaxterm, change persistent folder for root to <mobaxterm>/root , copy this portabledevops.sh to <mobaxterm>/root/etc/profile.d/ 
 
 if [  `env|grep MOBANOACL` ]; then
-	export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
-	export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
+    export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
+    export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
 else 
-	export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
-	export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
+    export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+    export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
 fi 
 export HOMEDRIVE=$HOMEDRIVEL:
 
@@ -43,47 +43,47 @@ fi
 #
 # portable production tool
 if [ -d $PORTABLEPATH/7z ]; then
-	alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
-	export PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
+    alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
+    export PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
 fi
 if [ -d $PORTABLEPATH/imgburn ]; then
-	alias img=$PORTABLEPATH/imgburn/ImgBurn.exe
+    alias img=$PORTABLEPATH/imgburn/ImgBurn.exe
 fi
 if [ -d $PORTABLEPATH/filezilla ]; then
-	alias fzp=$PORTABLEPATH/filezilla/FileZillaPortable.exe
+    alias fzp=$PORTABLEPATH/filezilla/FileZillaPortable.exe
 fi
 if [ -d $PORTABLEPATH/qdir ]; then
-	alias qdir=$PORTABLEPATH/qdir/Q-Dir.exe
+    alias qdir=$PORTABLEPATH/qdir/Q-Dir.exe
 fi
 if [ -d $PORTABLEPATH/scite ]; then
-	alias scite=$PORTABLEPATH/scite/SciTE.exe
+    alias scite=$PORTABLEPATH/scite/SciTE.exe
 fi
 if [ -d $PORTABLEPATH/sublimetext3 ]; then
-	alias st3=$PORTABLEPATH/sublimetext3/sublime_text.exe
+    alias st3=$PORTABLEPATH/sublimetext3/sublime_text.exe
 fi
 if [ -d $PORTABLEPATH/markdownpad2 ]; then
-	alias mp=$PORTABLEPATH/markdownpad2/MarkdownPad2.exe
+    alias mp=$PORTABLEPATH/markdownpad2/MarkdownPad2.exe
 fi
 if [ -d $PORTABLEPATH/greenshot ]; then
-	alias gshot=$PORTABLEPATH/greenshot/Greenshot.exe
+    alias gshot=$PORTABLEPATH/greenshot/Greenshot.exe
 fi
 if [ -d $PORTABLEPATH/kitty ]; then
-	alias kitty=$PORTABLEPATH/kitty/kitty_portable.exe
+    alias kitty=$PORTABLEPATH/kitty/kitty_portable.exe
 fi
 if [ -d $PORTABLEPATH/putty ]; then
-	alias putty=$PORTABLEPATH/putty/putty.exe
+    alias putty=$PORTABLEPATH/putty/putty.exe
 fi
 if [ -d $PORTABLEPATH/freecommander ]; then
-	alias fc=$PORTABLEPATH/freecommander/FreeCommanderPortable.exe
+    alias fc=$PORTABLEPATH/freecommander/FreeCommanderPortable.exe
 fi
 if [ -d $PORTABLEPATH/brackets ]; then
-	alias bk=$PORTABLEPATH/brackets/BracketsPortable.exe
+    alias bk=$PORTABLEPATH/brackets/BracketsPortable.exe
 fi
 
 # portable calibre tool
 if [ -d $PORTABLEPATH/calibre ]; then
-	export PATH=$PORTABLEPATH/calibre/Calibre:$PATH
-	alias calibrep=$PORTABLEPATH/calibre/calibre-portable.exe
+    export PATH=$PORTABLEPATH/calibre/Calibre:$PATH
+    alias calibrep=$PORTABLEPATH/calibre/calibre-portable.exe
 fi
 
 # setup VirtualBox path 
@@ -103,7 +103,7 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
 
     # function to setup env for docker vm host
     denv(){
-	   eval $(dm env "$@")
+       eval $(dm env "$@")
     }
     export -f denv
 
@@ -115,9 +115,9 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
         sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
         sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
         if [ $PORTSYS = 'CYGWIN' ]; then
-    	   sshkey='/cygdrive/'$sshkeydrive$sshkeypath
+           sshkey='/cygdrive/'$sshkeydrive$sshkeypath
         else
-    	   sshkey='/'$sshkeydrive$sshkeypath
+           sshkey='/'$sshkeydrive$sshkeypath
         fi
 
         shift
@@ -132,103 +132,103 @@ fi
 
 # portable vagrant
 if [ -d $PORTABLEPATH/vagrant ]; then
-	export PATH=$PORTABLEPATH/vagrant/bin:$PATH
+    export PATH=$PORTABLEPATH/vagrant/bin:$PATH
 fi
 
 # portable netsnmp
 if [ -d $PORTABLEPATH/netsnmp ]; then
-	export PATH=$PORTABLEPATH/netsnmp/usr/bin:$PATH
+    export PATH=$PORTABLEPATH/netsnmp/usr/bin:$PATH
 fi
 
 # portable Golang
 if [ -d $PORTABLEPATH/go ]; then
-	export GOROOT=$PORTABLEPATH/go
-	if [ ! -d $HOME/testgo ]; then
-		mkdir -p $HOME/testgo
-	fi 
-	export GOPATH=$HOME/testgo
-	export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+    export GOROOT=$PORTABLEPATH/go
+    if [ ! -d $HOME/testgo ]; then
+        mkdir -p $HOME/testgo
+    fi 
+    export GOPATH=$HOME/testgo
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 fi
 
 # portable Lua
 if [ -d $PORTABLEPATH/Lua ]; then
-	export LUA_DEV=$PORTABLEPATH/Lua/5.1
-	export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
-	export PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
-	alias lua=$LUA_DEV/lua.exe
+    export LUA_DEV=$PORTABLEPATH/Lua/5.1
+    export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
+    export PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
+    alias lua=$LUA_DEV/lua.exe
 fi
 
 # portable R
 if [ -d $PORTABLEPATH/R ]; then
-	export PATH=$PORTABLEPATH/R/R-3.3.1/bin/x64:$PATH
+    export PATH=$PORTABLEPATH/R/R-3.3.1/bin/x64:$PATH
 fi
 
 # portable ruby
 if [ -d $PORTABLEPATH/ruby23 ]; then
-	export PATH=$PORTABLEPATH/ruby23/bin:$PATH
+    export PATH=$PORTABLEPATH/ruby23/bin:$PATH
 fi
 
 # portable mingw64 on msys2
 if [ $PORTSYS = 'MSYS' ];then
-	export PATH=$PORTABLEPATH/msys64/mingw64/bin:$PATH
+    export PATH=$PORTABLEPATH/msys64/mingw64/bin:$PATH
 fi
 
 # portable cmder and cmdermini
 if [ -d $PORTABLEPATH/cmdermini ]; then
-	alias cmdermini=$PORTABLEPATH/cmdermini/cmder.exe
+    alias cmdermini=$PORTABLEPATH/cmdermini/cmder.exe
 fi
 
 # portable console2
 if [ -d $PORTABLEPATH/console2 ]; then
-	alias console=$PORTABLEPATH/console2/Console.exe
+    alias console=$PORTABLEPATH/console2/Console.exe
 fi 
 
 # portable gitbook editor
 if [ -d $PORTABLEPATH/gitbookeditor ]; then
-	export PATH=$PORTABLEPATH/gitbookeditor/app-6.2.1:$PATH
-	alias gitbooked='cd $PORTABLEPATH/gitbookeditor/app-6.2.1;echo $HOME;$PORTABLEPATH/gitbookeditor/Update.exe --processStart Editor.exe'
+    export PATH=$PORTABLEPATH/gitbookeditor/app-6.2.1:$PATH
+    alias gitbooked='cd $PORTABLEPATH/gitbookeditor/app-6.2.1;echo $HOME;$PORTABLEPATH/gitbookeditor/Update.exe --processStart Editor.exe'
 fi
 
 # portable nginx 
 if [ -d $PORTABLEPATH/nginx ]; then
-	export PATH=$PORTABLEPATH/nginx:$PATH
-	alias nginxstart='cd $PORTABLEPATH/nginx; ./nginx'
-	alias nginxstop='cd $PORTABLEPATH/nginx; ./nginx -s stop'
-	alias nmpstart='source $PORTABLEPATH/nginx/nmp_start.sh'
-	alias nmpstop='source $PORTABLEPATH/nginx/nmp_stop.sh'
+    export PATH=$PORTABLEPATH/nginx:$PATH
+    alias nginxstart='cd $PORTABLEPATH/nginx; ./nginx'
+    alias nginxstop='cd $PORTABLEPATH/nginx; ./nginx -s stop'
+    alias nmpstart='source $PORTABLEPATH/nginx/nmp_start.sh'
+    alias nmpstop='source $PORTABLEPATH/nginx/nmp_stop.sh'
 fi
 
 # portable php
 if [ -d $PORTABLEPATH/php ]; then
-	export PATH=$PORTABLEPATH/php:$PATH
-	alias phpcgi='cd $PORTABLEPATH/php; ./php-cgi -b 127.0.0.1:9000 -c ./php.ini'
+    export PATH=$PORTABLEPATH/php:$PATH
+    alias phpcgi='cd $PORTABLEPATH/php; ./php-cgi -b 127.0.0.1:9000 -c ./php.ini'
 fi
 
 # portable mysql
 if [ -d $PORTABLEPATH/mysql ]; then
-	export PATH=$PORTABLEPATH/mysql/bin:$PATH
-	alias mysqldstart='cd $PORTABLEPATH/mysql/bin; ./mysqld --console'
-	alias mysqldstop='mysqladmin shutdown -u root -p'
+    export PATH=$PORTABLEPATH/mysql/bin:$PATH
+    alias mysqldstart='cd $PORTABLEPATH/mysql/bin; ./mysqld --console'
+    alias mysqldstop='mysqladmin shutdown -u root -p'
 fi
 
 # portable redis
 if [ -d $PORTABLEPATH/redis ]; then
-	export PATH=$PORTABLEPATH/redis:$PATH
+    export PATH=$PORTABLEPATH/redis:$PATH
 fi
 
 # portable wkhtmltopdf
 if [ -d $PORTABLEPATH/wkhtmltopdf ]; then
-	export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
+    export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
 fi
 
 # ssh-agent
 eval $(ssh-agent -s)
  
 if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
-	echo "ssh key not exist: /home/$USERNAME/.ssh/id_rsa"
-	echo "please generate it using ssh-keygen"
+    echo "ssh key not exist: /home/$USERNAME/.ssh/id_rsa"
+    echo "please generate it using ssh-keygen"
 else
-	ssh-add /home/$USERNAME/.ssh/id_rsa
+    ssh-add /home/$USERNAME/.ssh/id_rsa
 fi 
 
 # common alias
