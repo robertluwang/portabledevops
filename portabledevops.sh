@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 10, 2017
+# Oct 14, 2017
 
 #
 # Section - env setup
@@ -26,9 +26,15 @@ cd $HOME
 if [  `env|grep MOBANOACL` ]; then
     export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
     export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
-else 
-    export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
-    export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
+else
+    # portable babun 
+    if [ `env|grep BABUN_HOME` ];then
+        export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
+        export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
+    else
+        export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+        export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
+    fi
 fi 
 export HOMEDRIVE=$HOMEDRIVEL:
 
@@ -153,7 +159,7 @@ fi
 # portable Lua
 if [ -d $PORTABLEPATH/Lua ]; then
     export LUA_DEV=$PORTABLEPATH/Lua/5.1
-    export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
+    #export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
     export PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
     alias lua=$LUA_DEV/lua.exe
 fi
@@ -234,3 +240,14 @@ fi
 # common alias
 alias ll='ls -ltra'
 alias pwdw='cygpath -ml `pwd`'
+
+# welcome 
+echo
+echo "Welcome to portabledevops"
+echo "Platform: "$PORTSYS
+echo "Home: "$HOME
+echo "Portable path: "$PORTFOLDER
+echo "Driver: "$HOMEDRIVEL
+echo "Shortcut: alias|grep "$PORTFOLDER
+date
+echo
