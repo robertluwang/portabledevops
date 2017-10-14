@@ -186,7 +186,12 @@ fi
 
 # portable console2
 if [ -d $PORTABLEPATH/console2 ]; then
-    alias console=$PORTABLEPATH/console2/Console.exe
+    alias console2=$PORTABLEPATH/console2/Console.exe
+fi 
+
+# portable consolez
+if [ -d $PORTABLEPATH/consolez ]; then
+    alias consolez=$PORTABLEPATH/consolez/Console.exe
 fi 
 
 # portable gitbook editor
@@ -225,6 +230,11 @@ fi
 # portable wkhtmltopdf
 if [ -d $PORTABLEPATH/wkhtmltopdf ]; then
     export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
+fi
+
+# portable git
+if [ -d $PORTABLEPATH/git ]; then
+    export PATH=$PATH:$PORTABLEPATH/git/mingw64/bin
 fi
 
 # ssh-agent
