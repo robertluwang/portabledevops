@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 14, 2017
+# Oct 15, 2017
 
 #
 # Section - env setup
@@ -66,6 +66,10 @@ if [ -d $PORTABLEPATH/scite ]; then
 fi
 if [ -d $PORTABLEPATH/sublimetext3 ]; then
     alias st3=$PORTABLEPATH/sublimetext3/sublime_text.exe
+    # only for cmder, start sublime text3 in split window
+    if [ `env|grep CMDER_ROOT` ];then
+        alias st="$PORTABLEPATH/sublimetext3/sublime_text.exe $* -new_console:s50H"
+    fi
 fi
 if [ -d $PORTABLEPATH/markdownpad2 ]; then
     alias mp=$PORTABLEPATH/markdownpad2/MarkdownPad2.exe
