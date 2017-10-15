@@ -86,6 +86,10 @@ if [ -d $PORTABLEPATH/brackets ]; then
     alias bk=$PORTABLEPATH/brackets/BracketsPortable.exe
 fi
 
+if [ -d $PORTABLEPATH/git ]; then
+    alias mgit=$PORTABLEPATH/git/mingw64/bin/git.exe
+fi
+
 # portable calibre tool
 if [ -d $PORTABLEPATH/calibre ]; then
     export PATH=$PORTABLEPATH/calibre/Calibre:$PATH
@@ -230,11 +234,6 @@ fi
 # portable wkhtmltopdf
 if [ -d $PORTABLEPATH/wkhtmltopdf ]; then
     export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
-fi
-
-# portable git
-if [ -d $PORTABLEPATH/git ]; then
-    export PATH=$PATH:$PORTABLEPATH/git/mingw64/bin
 fi
 
 # ssh-agent
