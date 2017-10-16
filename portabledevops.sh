@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 15, 2017
+# Oct 16, 2017
 
 #
 # Section - env setup
