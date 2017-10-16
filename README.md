@@ -47,7 +47,6 @@ dockertoolbox/
 ## portabledevops files list 
 ``` 
 portabledevops.sh - mini portable all-in-one customization setting for msys2/cygwin64
-portabledevops.sh.ref - long version of portabledevops.sh   
 setup.sh - portabledevops deploy script
 dockertoolbox.zip - collection of portable docker toolbox win binary files
 README.md - this file   
