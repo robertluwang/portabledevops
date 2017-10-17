@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 16, 2017
+# Oct 17, 2017
 
 #
 # Section - env setup
@@ -91,7 +91,7 @@ if [ -d $PORTABLEPATH/brackets ]; then
 fi
 
 if [ -d $PORTABLEPATH/git ]; then
-    alias mgit=$PORTABLEPATH/git/mingw64/bin/git.exe
+    export PATH=$PATH:$PORTABLEPATH/git/mingw64/bin
 fi
 
 # portable calibre tool
@@ -183,7 +183,7 @@ if [ -d $PORTABLEPATH/ruby23 ]; then
 fi
 
 # portable mingw64 on msys2
-if [ $PORTSYS = 'MSYS' ];then
+if [ -d $PORTABLEPATH/msys64/mingw64 ];then
     export PATH=$PORTABLEPATH/msys64/mingw64/bin:$PATH
 fi
 
