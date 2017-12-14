@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Dec 14, 2017
+# Oct 17, 2017
 
 #
 # Section - env setup
@@ -168,6 +168,29 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
         alias docker='docker --tls'  
     }
     export -f dockerfw
+
+    # remedy for minikube test without TLS verification when firewall existing
+    minikubefw(){
+        check8443=`VBoxManage showvminfo minikube|grep 127.0.0.1|grep 8443|cut -d, -f4|cut -d= -f2`
+        if [ $check8443 == '8443' ]; then 
+            # if 127.0.0.1 8443 forward exist, skip
+            echo 
+        else 
+            VBoxManage controlvm minikube natpf1 k8s-apiserver,tcp,127.0.0.1,8443,,8443
+        fi 
+        check30000=`VBoxManage showvminfo minikube|grep 127.0.0.1|grep 30000|cut -d, -f4|cut -d= -f2`
+        if [ $check30000 == '30000' ]; then 
+            # if 127.0.0.1 30000 forward exist, skip
+            echo 
+        else 
+            VBoxManage controlvm minikube natpf1 k8s-dashboard,tcp,127.0.0.1,30000,,30000
+        fi 
+
+        kubectl config set-cluster minikube-vpn --server=https://127.0.0.1:8443 --insecure-skip-tls-verify
+        kubectl config set-context minikube-vpn --cluster=minikube-vpn --user=minikube
+        kubectl config use-context minikube-vpn  
+    }
+    export -f minikubefw
 
 fi
 
