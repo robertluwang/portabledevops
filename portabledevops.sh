@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm
 # By Robert Wang
-# Oct 17, 2017
+# Dec 14, 2017
 
 #
 # Section - env setup
@@ -142,6 +142,33 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
     # alias for Go native ssh when local ssh client not working
     alias nassh='dm --native-ssh ssh'
 
+    # remedy for local docker test without TLS verification when firewall existing
+    dockerfw(){
+        check2375=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep 2375|cut -d, -f4|cut -d= -f2`
+        if [ $check2375 == '2375' ]; then 
+            # if 127.0.0.1 2375 forward exist, skip
+            echo 
+        else 
+            VBoxManage controlvm "$1" natpf1 docker-fw,tcp,127.0.0.1,2375,,2376 
+        fi 
+
+        certwinpath=`dm inspect "$1"|grep StorePath|tail -1|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
+        certcygpath=`cygpath -ml $certwinpath`
+        certdrive=`echo $certcygpath|awk -F:  '{print $1}'`
+        certpath=`echo $certcygpath|awk -F:  '{print $2}'`
+        if [ $PORTSYS = 'CYGWIN' ]; then
+           dockercert='/cygdrive/'$certdrive$certpath
+        else
+           dockercert='/'$certdrive$certpath
+        fi
+
+        export DOCKER_MACHINE_NAME="$1" 
+        export DOCKER_HOST="tcp://127.0.0.1:2375" 
+        export DOCKER_CERT_PATH=$dockercert
+        alias docker='docker --tls'  
+    }
+    export -f dockerfw
+
 fi
 
 # portable vagrant
@@ -157,11 +184,13 @@ fi
 # portable Golang
 if [ -d $PORTABLEPATH/go ]; then
     export GOROOT=$PORTABLEPATH/go
-    if [ ! -d $HOME/testgo ]; then
-        mkdir -p $HOME/testgo
-    fi 
-    export GOPATH=$HOME/testgo
-    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+    #if [ ! -d $HOME/testgo ]; then
+    #    mkdir -p $HOME/testgo
+    #fi 
+    #export GOPATH=$HOME/testgo
+    export GOPATH=/j/oldhorse/test/go
+    export GOBIN=$GOPATH/bin
+    export PATH=$GOBIN:$GOROOT/bin:$PATH
 fi
 
 # portable Lua
@@ -238,6 +267,16 @@ fi
 # portable wkhtmltopdf
 if [ -d $PORTABLEPATH/wkhtmltopdf ]; then
     export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
+fi
+
+# portable pdflatex
+if [ -d $PORTABLEPATH/miktex ]; then
+    export PATH=$PORTABLEPATH/miktex/miktex/bin:$PATH
+fi
+
+# portable pandoc
+if [ -d $PORTABLEPATH/pandoc ]; then
+    export PATH=$PORTABLEPATH/pandoc:$PATH
 fi
 
 # ssh-agent
