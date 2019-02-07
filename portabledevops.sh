@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm/wsl
 # By Robert Wang
-# Feb 1st, 2019
+# Feb 7th, 2019
 
 # debug
 #set -x 
@@ -12,7 +12,7 @@
 # Section - env setup
 #
 
-export DEFPORTFOLDER=portableapps
+export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
 export DEFVAGRANTWSLHOME=/mnt/c/vagrant
 
