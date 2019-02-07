@@ -1,12 +1,20 @@
 #!/usr/bin/bash 
 # portabledevops.sh
-# customized setting for msys2/cygwin64/mobaxterm
+# customized setting for msys2/cygwin64/mobaxterm/wsl
 # By Robert Wang
-# Oct 17, 2017
+# Feb 1st, 2019
+
+# debug
+#set -x 
+#set -o functrace
 
 #
 # Section - env setup
 #
+
+export DEFPORTFOLDER=portableapps
+export DEFHOMEDRIVEL=c
+export DEFVAGRANTWSLHOME=/mnt/c/vagrant
 
 export PORTSYS=`uname|cut -d'_' -f1`
 
@@ -17,7 +25,11 @@ if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]
     HOME=/home/$USERNAME
     export USERPROFILE=$HOME
     export HOMEPATH=$HOME
-fi 
+elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    export USERNAME=$USER
+    export USERPROFILE=$HOME
+    export HOMEPATH=$HOME
+fi
 
 cd $HOME
 
@@ -26,20 +38,35 @@ cd $HOME
 if [  `env|grep MOBANOACL` ]; then
     export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
     export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
+elif [ `env|grep BABUN_HOME` ];then
+    export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
+    export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
+elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    export PORTFOLDER=$DEFPORTFOLDER
+    export HOMEDRIVEL=$DEFHOMEDRIVEL
 else
-    # portable babun 
-    if [ `env|grep BABUN_HOME` ];then
-        export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
-        export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
-    else
-        export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
-        export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
-    fi
+    export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+    export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
 fi 
+
 export HOMEDRIVE=$HOMEDRIVEL:
+
+function startwslssh(){
+    echo check wsl sshd status
+    service ssh status
+    if [ "$?" != "0" ]; then
+        sudo service ssh start
+    fi
+}
 
 if [ $PORTSYS = 'CYGWIN' ]; then
     export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
+elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    export PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
+    export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH=$DEFVAGRANTWSLHOME
+    export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+    export PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
+    startwslssh
 else
     export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
 fi
@@ -59,7 +86,7 @@ if [ -d $PORTABLEPATH/filezilla ]; then
     alias fzp=$PORTABLEPATH/filezilla/FileZillaPortable.exe
 fi
 if [ -d $PORTABLEPATH/qdir ]; then
-    alias qdir=$PORTABLEPATH/qdir/Q-Dir.exe
+    alias qdir=$PORTABLEPATH/qdir/Q-Dir_64.exe
 fi
 if [ -d $PORTABLEPATH/scite ]; then
     alias scite=$PORTABLEPATH/scite/SciTE.exe
@@ -103,6 +130,9 @@ fi
 # setup VirtualBox path 
 if [ $PORTSYS = 'CYGWIN' ];then 
     export VBOX_MSI_INSTALL_PATH=/cygdrive/c/Program_Files/Oracle/VirtualBox/
+elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    export VBOX_MSI_INSTALL_PATH=/mnt/c/Program_Files/Oracle/VirtualBox/
+    alias VBoxManage=VBoxManage.exe
 else
     export VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
 fi 
@@ -117,23 +147,31 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
 
     # function to setup env for docker vm host
     denv(){
-       eval $(dm env "$@")
+    if [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
+            eval $(dm env "$@" --shell bash |sed -e 's|\\|/|g' -e 's|C:/|/mnt/c/|g')
+    else
+            eval $(dm env "$@" --shell bash) 
+    fi
     }
+
     export -f denv
 
     # directly ssh to docker vm when docker-machine env not working well
     dmssh(){
         sshport=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep ssh |awk -F',' '{print $4}'|awk -F'=' '{print $2}'`
         sshkeywinpath=`dm inspect "$1"|grep SSHKeyPath|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
-        sshkeycygpath=`cygpath -ml $sshkeywinpath`
-        sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
-        sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
-        if [ $PORTSYS = 'CYGWIN' ]; then
-           sshkey='/cygdrive/'$sshkeydrive$sshkeypath
+        if [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
+            sshkey=`echo $sshkeywinpath|sed -e 's|\\\\|/|g' -e 's|C:/|/mnt/c/|g'|sed 's|//|/|g'`
         else
-           sshkey='/'$sshkeydrive$sshkeypath
-        fi
-
+            sshkeycygpath=`cygpath -ml $sshkeywinpath`
+            sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
+            sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
+            if [ $PORTSYS = 'CYGWIN' ]; then
+                sshkey='/cygdrive/'$sshkeydrive$sshkeypath
+            else
+                sshkey='/'$sshkeydrive$sshkeypath
+            fi
+        fi 
         shift
         ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no docker@127.0.0.1 -o IdentitiesOnly=yes -i $sshkey -p $sshport "$@"
     }
@@ -316,6 +354,12 @@ if [ -d $PORTABLEPATH/pandoc ]; then
     export PATH=$PORTABLEPATH/pandoc:$PATH
 fi
 
+#  gcloud sdk
+if [ -d $PORTABLEPATH/gcsdk ]; then
+    export PATH=$PORTABLEPATH/gcsdk/google-cloud-sdk/bin:$PATH
+    export CLOUDSDK_PYTHON=$PORTABLEPATH/gcsdk/google-cloud-sdk/platform/bundledpython/python
+fi
+
 # ssh-agent
 eval $(ssh-agent -s)
  
@@ -328,7 +372,12 @@ fi
 
 # common alias
 alias ll='ls -ltra'
-alias pwdw='cygpath -ml `pwd`'
+
+if [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    echo
+else
+    alias pwdw='cygpath -ml `pwd`'
+fi
 
 # welcome 
 echo
