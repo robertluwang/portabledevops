@@ -4,17 +4,21 @@
 # By Robert Wang
 # Feb 7th, 2019
 
-# debug
+#debug
 #set -x 
 #set -o functrace
 
-#
+#####################
 # Section - env setup
-#
+#####################
+
+# default env for WSL 
 
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
 export DEFVAGRANTWSLHOME=/mnt/c/vagrant
+
+# PORTSYS/USERNAME/USERPROFILE/HOMEPATH
 
 export PORTSYS=`uname|cut -d'_' -f1`
 
@@ -30,6 +34,8 @@ elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Mic
     export USERPROFILE=$HOME
     export HOMEPATH=$HOME
 fi
+
+# PORTFOLDER/HOMEDRIVEL/HOMEDRIVE
 
 cd $HOME
 
@@ -51,6 +57,8 @@ fi
 
 export HOMEDRIVE=$HOMEDRIVEL:
 
+# wsl sshd script function
+
 function startwslssh(){
     echo check wsl sshd status
     service ssh status
@@ -58,6 +66,8 @@ function startwslssh(){
         sudo service ssh start
     fi
 }
+
+# PORTABLEPATH
 
 if [ $PORTSYS = 'CYGWIN' ]; then
     export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
@@ -71,10 +81,12 @@ else
     export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
 fi
 
-#
+######################################
 # Section - portable application setup 
-#
+######################################
+
 # portable production tool
+
 if [ -d $PORTABLEPATH/7z ]; then
     alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
     export PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
