@@ -173,8 +173,8 @@ $ ssh -T git@github.com
 download portabledevops to your home folder, 
 ```
 cd ~ 
-wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/portabledevops.sh'
-wget -qO- https://github.com/robertluwang/portabledevops/blob/master/dockertoolbox.zip
+wget -qO portabledevops.sh 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/portabledevops.sh'
+wget -qO dockertoolbox.zip https://github.com/robertluwang/portabledevops/raw/master/dockertoolbox.zip
 unzip dockertoolbox.zip
 cp dockertoolbox/*  <PORTABLEPATH>/dockertoolbox
 chmod +x <PORTABLEPATH>/dockertoolbox/*.exe
