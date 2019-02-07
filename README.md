@@ -170,6 +170,7 @@ $ ssh -T git@github.com
 ## 7 deploy portabledevops 
 * place all-in-one portable customization setting to msys2/cygwin/mobaxterm/WSL /etc/profile.d
 * install updated portable docker toolbox
+
 download portabledevops to your home folder, 
 ```
 cd ~ 
