@@ -8,7 +8,6 @@
 
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
-export DEFVAGRANTWSLHOME=/mnt/c/vagrant
 
 export PORTSYS=`uname|cut -d'_' -f1`
 
@@ -42,6 +41,14 @@ else
     export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
     export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
 fi 
+
+if [ $PORTSYS = 'CYGWIN' ]; then
+    export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
+elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    export PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
+else
+    export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
+fi
 
 cd ~
 chmod 0700 .ssh/id_rsa
