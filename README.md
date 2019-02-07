@@ -102,9 +102,9 @@ chmod +x apt-cyg
 mv apt-cyg /usr/local/bin
 which -a apt-cyg
 ```
-- install git, python-devel, gcc-g++, curl, dos2unix, zip, unzip 
+- install git, python-devel, gcc-g++, curl, zip, unzip 
 ```
-apt-cyg install git python-devel gcc-g++ curl dos2unix zip unzip
+apt-cyg install git python-devel gcc-g++ curl zip unzip
 ```
 - install pip
 ```
@@ -117,9 +117,9 @@ wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 - launch MobaXterm.exe, click Setting->General
 - change persistent root(/) directory to mobaxterm/root
 - change home directory to mobaxterm/home or C:\Users\USERNAME
-- install git, dos2unix zip
+- install git, zip
 ```
-apt-cyg install git dos2unix zip
+apt-cyg install git zip
 ```
 - install pip
 ```
