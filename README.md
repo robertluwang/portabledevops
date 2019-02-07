@@ -2,7 +2,7 @@
 
 A portable devops tool set on windows, easy customization of cmder/console+msys2/cygwin/mobaxterm/WSL.
 
-## Background
+## 1 Background
 
 [Cmder](https://github.com/cmderdev/cmder) is a software package created out of pure frustration over absence of usable console emulator on Windows. It is based on ConEmu. There are two version of cmder: cmder with own Git for Windows and cmdermini without git and bash. I used cmdermini as lightweight xterm with bash/git from msys or cygwin.
 
@@ -16,10 +16,10 @@ A portable devops tool set on windows, easy customization of cmder/console+msys2
 
 [WSL](https://docs.microsoft.com/en-us/windows/wsl/about) The Windows Subsystem for Linux lets developers run GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a virtual machine.
 
-## What is portabledevops?
+## 2 What is portabledevops?
 it is portable practice approach to integrate all portable devops tools into one portable folder running on usb or portable disk 
 
-## portabledevops folder structure sample: 
+## 3 portabledevops folder structure sample: 
 &lt;drive&gt;:\portabledevops\  
 * productive tools      
 ```
@@ -46,24 +46,24 @@ console2/
 dockertoolbox/        
 ```
 
-## portabledevops files list 
+## 4 portabledevops files list 
 ``` 
 portabledevops.sh - mini portable all-in-one customization setting for msys2/cygwin64/wsl
 dockertoolbox.zip - collection of portable docker toolbox win binary files
 README.md - this file   
 ```
 
-## How to setup portabledevops?
+## 5 How to setup portabledevops?
 
 It is pretty easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc. 
 
-### create portabledevops root folder on USB drive
+### 5.1 create portabledevops root folder on USB drive
 for example: 
 ```
 L:\portabledevops
 ```
 
-### make junction (directory hard link) for “Program Files”
+### 5.2 make junction (directory hard link) for “Program Files”
 it will make easy to find VirtualBox tools  
 from cmd.exe 
 ```
@@ -73,11 +73,11 @@ mklink /j  C:\Program_Files_x86 "C:\Program Files (x86)"
 Junction created for C:\Program_Files_x86 <<===>> C:\Program Files (x86)
 ```
 
-### install portable shell  
+### 5.3 install portable shell  
 L:\portabledevops\cmdermini - download and unzip cmdermini from [cmder_mini.zip](https://github.com/cmderdev/cmder/releases) to this folder
 L:\portabledevops\console2  - download and unzip console2 from [console2 zip](https://sourceforge.net/projects/console/) to this folder
 
-### install portable msys2 
+### 5.4 install portable msys2 
 - download msys2-x86_64-xxx.exe from [http://msys2.github.io/](http://msys2.github.io/)
 - install to default location C:\msys64
 - copy C:\msys64 to L:\portabledevops\msys64
@@ -89,7 +89,7 @@ pacman -Sy base-devel mingw-w64-x86_64-gcc python git zip unzip p7zip
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python2
 ```
 
-### install portable cygwin64 
+### 5.5 install portable cygwin64 
 - download cygwin64 from [https://www.cygwin.com/setup-x86_64.exe](https://www.cygwin.com/setup-x86_64.exe)
 - move setup-x86_64.exe to L:\portabledevops\cygwin64 folder
 - click setup-x86_64.exe
@@ -111,7 +111,7 @@ apt-cyg install git python-devel gcc-g++ curl dos2unix zip unzip
 wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 ```
 
-### install portable mobaxterm
+### 5.6 install portable mobaxterm
 - download mobaxterm from [https://mobaxterm.mobatek.net](https://mobaxterm.mobatek.net/download.html)
 - move mobaxterm folder to L:\portabledevops\
 - launch MobaXterm.exe, click Setting->General
@@ -126,7 +126,7 @@ apt-cyg install git dos2unix zip
 wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 ```
 
-### git setup
+## 6 git setup
 * start cmder bash shell 
 ``` 
 launch cmder by double click Cmder.exe under cmdermini/ folder 
@@ -167,7 +167,7 @@ paste to Key field, give the Title name, then click "Add SSH key" button.
 $ ssh -T git@github.com
 ```
 
-### deploy portabledevops 
+## 7 deploy portabledevops 
 * place all-in-one portable customization setting to msys2/cygwin/mobaxterm/WSL /etc/profile.d
 * install updated portable docker toolbox
 download portabledevops to your home folder, 
@@ -179,11 +179,11 @@ unzip dockertoolbox.zip
 cp dockertoolbox/*  <PORTABLEPATH>/dockertoolbox
 chmod +x <PORTABLEPATH>/dockertoolbox/*.exe
 ```
-#### msys2/cygwin/mobaxterm
+### 7.1 msys2/cygwin/mobaxterm
 ```
 sudo cp portabledevops.sh /etc/profile.d
 ```
-#### WSL 
+### 7.2 WSL 
 WSL installed on win10 so it is not portable, but we can integrate portable app from window10 to WSL cli using same tool.
 Assumed the default portable folder is at C:\portabledevops, or you can change it in beginning of portabledevops.sh, 
 ```
@@ -194,7 +194,7 @@ then place to /etc/profile.d,
 ```
 sudo cp portabledevops.sh /etc/profile.d
 ```
-### add cmder task   
+## 8 add cmder task   
 ```
 msys64 :  set MSYS2_PATH_TYPE=inherit & cmd /c "%ConEmuDir%\..\..\..\msys64\usr\bin\bash --login -i"
 cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i -new_console:C:"%ConEmuDir%\..\..\..\cygwin64\Cygwin.ico"
