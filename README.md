@@ -49,7 +49,6 @@ dockertoolbox/
 ## portabledevops files list 
 ``` 
 portabledevops.sh - mini portable all-in-one customization setting for msys2/cygwin64/wsl
-setup.sh - portabledevops deploy script
 dockertoolbox.zip - collection of portable docker toolbox win binary files
 README.md - this file   
 ```
@@ -57,6 +56,7 @@ README.md - this file
 ## How to setup portabledevops?
 
 It is pretty easy, the idea is to place all portable customization in one place, and flexible to any window DOS replacement - shell terminal like cmder, console etc. 
+
 ### create portabledevops root folder on USB drive
 for example: 
 ```
@@ -126,18 +126,6 @@ apt-cyg install git dos2unix zip
 wget -qO- 'https://bootstrap.pypa.io/get-pip.py' | python2
 ```
 
-### add cmder task   
-```
-msys64 :  set MSYS2_PATH_TYPE=inherit & cmd /c "%ConEmuDir%\..\..\..\msys64\usr\bin\bash --login -i"
-cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i -new_console:C:"%ConEmuDir%\..\..\..\cygwin64\Cygwin.ico"
-``` 
-
-### add console tab  
-```
-msys64:  cmd /c "\portabledevops\msys64\usr\bin\bash.exe --login -i"
-cygwin64:  cmd /c "\portabledevops\cygwin64\bin\bash.exe --login -i"  
-``` 
-
 ### git setup
 * start cmder bash shell 
 ``` 
@@ -179,30 +167,36 @@ paste to Key field, give the Title name, then click "Add SSH key" button.
 $ ssh -T git@github.com
 ```
 
-### deploy portabledevops using setup.sh script
-* place all-in-one portable customization setting to msys2/cygwin/mobaxterm /etc/profile.d
+### deploy portabledevops 
+* place all-in-one portable customization setting to msys2/cygwin/mobaxterm/WSL /etc/profile.d
 * install updated portable docker toolbox
+download portabledevops to your home folder, 
 ```
-run below one line command from cmder/console2/mobaxterm terminal bash shell,
-cd ~ ; wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/setup.sh' | sh
+cd ~ 
+wget -qO- 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/portabledevops.sh'
+wget -qO- https://github.com/robertluwang/portabledevops/blob/master/dockertoolbox.zip
+unzip dockertoolbox.zip
+cp dockertoolbox/*  <PORTABLEPATH>/dockertoolbox
+chmod +x <PORTABLEPATH>/dockertoolbox/*.exe
 ```
-
-## WSL setup for portable apps
+#### msys2/cygwin/mobaxterm
+```
+sudo cp portabledevops.sh /etc/profile.d
+```
+#### WSL 
 WSL installed on win10 so it is not portable, but we can integrate portable app from window10 to WSL cli using same tool.
-
-git clone git@github.com:robertluwang/portabledevops.git
-
-Assumed the portable folder is at C:\portabledevops, or you can change it in beginning of portabledevops.sh, 
+Assumed the default portable folder is at C:\portabledevops, or you can change it in beginning of portabledevops.sh, 
 ```
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
-export DEFVAGRANTWSLHOME=/mnt/c/vagrant
 ```
-
-then place portabledevops.sh to WSL /etc/profile.d/.
-
-### wsl task in cmder
-set "PATH=%ConEmuBaseDirShort%\wsl;%PATH%" & %ConEmuBaseDirShort%\conemu-cyg-64.exe --wsl -cur_console:pm:/mnt
-
-
-
+then place to /etc/profile.d,
+```
+sudo cp portabledevops.sh /etc/profile.d
+```
+### add cmder task   
+```
+msys64 :  set MSYS2_PATH_TYPE=inherit & cmd /c "%ConEmuDir%\..\..\..\msys64\usr\bin\bash --login -i"
+cygwin64 :  cmd /c "%ConEmuDir%\..\..\..\cygwin64\bin\bash --login -i -new_console:C:"%ConEmuDir%\..\..\..\cygwin64\Cygwin.ico"
+wsl: set "PATH=%ConEmuBaseDirShort%\wsl;%PATH%" & %ConEmuBaseDirShort%\conemu-cyg-64.exe --wsl -cur_console:pm:/mnt
+``` 
