@@ -183,7 +183,7 @@ chmod +x <PORTABLEPATH>/dockertoolbox/*.exe
 ```
 ### 7.1 msys2/cygwin/mobaxterm
 ```
-sudo cp portabledevops.sh /etc/profile.d
+cp portabledevops.sh /etc/profile.d
 ```
 ### 7.2 WSL 
 WSL installed on win10 so it is not portable, but we can integrate portable app from window10 to WSL cli using same tool.
