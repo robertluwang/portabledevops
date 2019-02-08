@@ -194,7 +194,7 @@ sudo cp portabledevops.sh /etc/profile.d
 ```
 re-start terminal session will auto run portabledevops.
 
-### optional - deploy portable docker toolbox
+### 7.3 optional - deploy portable docker toolbox
 ```
 wget --no-check-certificate -qO dockertoolbox.zip https://github.com/robertluwang/portabledevops/raw/master/dockertoolbox.zip
 unzip dockertoolbox.zip
