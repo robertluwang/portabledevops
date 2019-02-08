@@ -181,6 +181,8 @@ chmod +x portabledevops.sh
 ```
 cp portabledevops.sh /etc/profile.d
 ```
+re-start terminal session will auto run portabledevops.
+
 ### 7.2 WSL 
 WSL installed on win10 so it is not portable, but we can integrate portable app from window10 to WSL cli using same tool.
 Assumed the default portable folder is at C:\portabledevops, or you can change it in beginning of portabledevops.sh, 
@@ -196,6 +198,7 @@ re-start terminal session will auto run portabledevops.
 
 ### 7.3 optional - deploy portable docker toolbox
 ```
+cd ~
 wget --no-check-certificate -qO dockertoolbox.zip https://github.com/robertluwang/portabledevops/raw/master/dockertoolbox.zip
 unzip dockertoolbox.zip
 cp dockertoolbox/*  $PORTABLEPATH/dockertoolbox
