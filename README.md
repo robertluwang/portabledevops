@@ -177,7 +177,7 @@ cd ~
 wget --no-check-certificate -qO portabledevops.sh 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/portabledevops.sh'
 chmod +x portabledevops.sh
 ```
-### 7.1 msys2/cygwin/mobaxterm
+### 7.1 portable msys2/cygwin/mobaxterm
 ```
 cp portabledevops.sh /etc/profile.d
 ```
@@ -187,12 +187,24 @@ re-start terminal session will auto run portabledevops.
 WSL installed on win10 so it is not portable, but we can integrate portable app from window10 to WSL cli using same tool.
 Assumed the default portable folder is at C:\portabledevops, or you can change it in beginning of portabledevops.sh, 
 ```
+export PORTABLE=NO
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
+export DEFVAGRANTHOME=/mnt/c/vagrant
 ```
 then place to /etc/profile.d,
 ```
 sudo cp portabledevops.sh /etc/profile.d
+```
+re-start terminal session will auto run portabledevops.
+
+### 7.3 no portable git/msys2/cygwin/mobaxterm
+This is new feature, you can directly integrate this portabledevops tool to existing git/msys2/cygwin/mobaxterm which itself is not located at portable folder like L:\portabledevops\msys64, you still can customize the portable folder as below, similar like WSL,
+```
+export PORTABLE=NO
+export DEFPORTFOLDER=portabledevops
+export DEFHOMEDRIVEL=c
+export DEFVAGRANTHOME=/c/vagrant
 ```
 re-start terminal session will auto run portabledevops.
 
