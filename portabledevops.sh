@@ -16,11 +16,12 @@
 
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
-export DEFVAGRANTWSLHOME=/mnt/c/vagrant
+export DEFVAGRANTHOME=/mnt/c/vagrant
 
 # PORTSYS/USERNAME/USERPROFILE/HOMEPATH
 
 export PORTSYS=`uname|cut -d'_' -f1`
+export USERNAME=$USER
 
 if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]; then
     if [ ! -d /home/$USERNAME ]; then
@@ -30,7 +31,6 @@ if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]
     export USERPROFILE=$HOME
     export HOMEPATH=$HOME
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
-    export USERNAME=$USER
     export USERPROFILE=$HOME
     export HOMEPATH=$HOME
 fi
@@ -39,21 +39,20 @@ fi
 
 cd $HOME
 
-# portable mobaxterm, change persistent folder for root to <mobaxterm>/root , copy this portabledevops.sh to <mobaxterm>/root/etc/profile.d/ 
-
-if [  `env|grep MOBANOACL` ]; then
+if [  "`env|grep MOBANOACL`" ]; then
     export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
     export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
-elif [ `env|grep BABUN_HOME` ];then
+elif [ "`env|grep BABUN_HOME`" ];then
     export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
     export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
+    # use default env for WSL
     export PORTFOLDER=$DEFPORTFOLDER
     export HOMEDRIVEL=$DEFHOMEDRIVEL
 else
     export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
     export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
-fi 
+fi
 
 export HOMEDRIVE=$HOMEDRIVEL:
 
@@ -73,7 +72,7 @@ if [ $PORTSYS = 'CYGWIN' ]; then
     export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
     export PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
-    export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH=$DEFVAGRANTWSLHOME
+    export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH=$DEFVAGRANTHOME
     export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
     export PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
     startwslssh
