@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm/wsl
 # By Robert Wang
-# Feb 7th, 2019
+# Feb 9th, 2019
 
 #debug
 #set -x 
@@ -12,8 +12,10 @@
 # Section - env setup
 #####################
 
-# default env for WSL, msys2/cygwin will ignore them 
-
+# default env for WSL or no portable Unix like system
+# PORTABLE=NO will use following 3 DEF, this is case for WSL or no portable msys/cygwin
+# PORTABLE=YES will ignore following 3 DEF, this is case for portable msys/cygwin
+export PORTABLE=YES
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
 export DEFVAGRANTHOME=/mnt/c/vagrant
@@ -21,7 +23,12 @@ export DEFVAGRANTHOME=/mnt/c/vagrant
 # PORTSYS/USERNAME/USERPROFILE/HOMEPATH
 
 export PORTSYS=`uname|cut -d'_' -f1`
-export USERNAME=$USER
+
+if [[ ! -z "$USER" ]];then
+    export USERNAME=$USER
+elif [[ ! -z "$USERNAME" ]];then
+    export USER=$USERNAME
+fi
 
 if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]; then
     if [ ! -d /home/$USERNAME ]; then
@@ -39,19 +46,21 @@ fi
 
 cd $HOME
 
-if [  "`env|grep MOBANOACL`" ]; then
-    export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
-    export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
-elif [ "`env|grep BABUN_HOME`" ];then
-    export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
-    export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
-elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
-    # use default env for WSL
+if [ $PORTABLE = NO ] || ([ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]);then
     export PORTFOLDER=$DEFPORTFOLDER
     export HOMEDRIVEL=$DEFHOMEDRIVEL
-else
-    export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
-    export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
+else 
+    # portable msys2/cygwin/mobaxterm
+    if [  "`env|grep MOBANOACL`" ]; then
+        export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
+        export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
+    elif [ "`env|grep BABUN_HOME`" ];then
+        export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
+        export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
+    else
+        export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+        export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
+    fi
 fi
 
 export HOMEDRIVE=$HOMEDRIVEL:
@@ -64,12 +73,36 @@ function startwslssh(){
     if [ "$?" != "0" ]; then
         sudo service ssh start
     fi
+    sshport=`cat /etc/ssh/sshd_config |grep ^Port`
+    if [ "$?" != "0" ]; then
+        sshport=22
+    fi
+    echo sshd is listening at $sshport
+}
+
+# msys sshd start function
+
+function startssh(){
+    echo check sshd status 
+    ps -ef|grep sshd > /dev/null
+    if [ "$?" = "0" ]; then
+        echo sshd is running
+    else 
+        echo starting sshd at $sshport
+        /usr/bin/sshd
+    fi
+    sshport=`cat /etc/ssh/sshd_config |grep ^Port`
+    if [ "$?" != "0" ]; then
+        sshport=22
+    fi
+    echo sshd is listening at $sshport
 }
 
 # PORTABLEPATH
 
 if [ $PORTSYS = 'CYGWIN' ]; then
-    export PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
+    export PORTABLEPATH=/cygdrive/$HOMEDRIVEL/$PORTFOLDER
+    startssh
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
     export PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
     export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH=$DEFVAGRANTHOME
@@ -77,7 +110,8 @@ elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Mic
     export PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
     startwslssh
 else
-    export PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
+    export PORTABLEPATH=/$HOMEDRIVEL/$PORTFOLDER
+    startssh
 fi
 
 ######################################
