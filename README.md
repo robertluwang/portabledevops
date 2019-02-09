@@ -208,7 +208,7 @@ export DEFVAGRANTHOME=/c/vagrant
 ```
 re-start terminal session will auto run portabledevops.
 
-### 7.3 optional - deploy portable docker toolbox
+### 7.4 optional - deploy portable docker toolbox
 ```
 cd ~
 wget --no-check-certificate -qO dockertoolbox.zip https://github.com/robertluwang/portabledevops/raw/master/dockertoolbox.zip
