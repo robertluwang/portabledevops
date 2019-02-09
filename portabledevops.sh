@@ -12,7 +12,7 @@
 # Section - env setup
 #####################
 
-# default env for WSL 
+# default env for WSL, msys2/cygwin will ignore them 
 
 export DEFPORTFOLDER=portabledevops
 export DEFHOMEDRIVEL=c
