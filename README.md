@@ -176,15 +176,13 @@ download portabledevops to your home folder,
 cd ~ 
 wget --no-check-certificate -qO portabledevops.sh 'https://raw.githubusercontent.com/robertluwang/portabledevops/master/portabledevops.sh'
 chmod +x portabledevops.sh
-wget --no-check-certificate -qO dockertoolbox.zip https://github.com/robertluwang/portabledevops/raw/master/dockertoolbox.zip
-unzip dockertoolbox.zip
-cp dockertoolbox/*  <PORTABLEPATH>/dockertoolbox
-chmod +x <PORTABLEPATH>/dockertoolbox/*.exe
 ```
 ### 7.1 msys2/cygwin/mobaxterm
 ```
 cp portabledevops.sh /etc/profile.d
 ```
+re-start terminal session will auto run portabledevops.
+
 ### 7.2 WSL 
 WSL installed on win10 so it is not portable, but we can integrate portable app from window10 to WSL cli using same tool.
 Assumed the default portable folder is at C:\portabledevops, or you can change it in beginning of portabledevops.sh, 
@@ -196,6 +194,17 @@ then place to /etc/profile.d,
 ```
 sudo cp portabledevops.sh /etc/profile.d
 ```
+re-start terminal session will auto run portabledevops.
+
+### 7.3 optional - deploy portable docker toolbox
+```
+cd ~
+wget --no-check-certificate -qO dockertoolbox.zip https://github.com/robertluwang/portabledevops/raw/master/dockertoolbox.zip
+unzip dockertoolbox.zip
+cp dockertoolbox/*  $PORTABLEPATH/dockertoolbox
+chmod +x $PORTABLEPATH/dockertoolbox/*.exe
+```
+
 ## 8 add cmder task   
 ```
 msys64 :  set MSYS2_PATH_TYPE=inherit & cmd /c "%ConEmuDir%\..\..\..\msys64\usr\bin\bash --login -i"
