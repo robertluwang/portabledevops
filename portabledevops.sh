@@ -65,6 +65,8 @@ fi
 
 export HOMEDRIVE=$HOMEDRIVEL:
 
+# wsl sshd start function
+
 function startwslssh(){
     echo check wsl sshd status
     # if sshd installed
@@ -79,6 +81,11 @@ function startwslssh(){
         else
             echo starting sshd
             sudo service ssh start
+            if [ "$?" = "0" ]; then
+                echo sshd started success
+            else
+                echo sshd failed
+            fi
         fi
         sshport=`cat /etc/ssh/sshd_config |grep ^Port`
         if [ "$?" != "0" ]; then
@@ -104,6 +111,11 @@ function startssh(){
         else 
             echo starting sshd
             `which sshd`
+            if [ "$?" = "0" ]; then
+                echo sshd started success
+            else
+                echo sshd failed
+            fi
         fi
         # if sshd_config exist
         ls /etc/ssh/sshd_config > /dev/null
