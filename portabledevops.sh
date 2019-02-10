@@ -65,37 +65,58 @@ fi
 
 export HOMEDRIVE=$HOMEDRIVEL:
 
-# wsl sshd script function
-
 function startwslssh(){
     echo check wsl sshd status
-    service ssh status
+    # if sshd installed
+    which sshd > /dev/null
     if [ "$?" != "0" ]; then
-        sudo service ssh start
+        echo sshd not installed
+    else
+        # if sshd running
+        service ssh status
+        if [ "$?" = "0" ]; then
+            echo sshd is running
+        else
+            echo starting sshd
+            sudo service ssh start
+        fi
+        sshport=`cat /etc/ssh/sshd_config |grep ^Port`
+        if [ "$?" != "0" ]; then
+            sshport=22
+        fi
+        echo sshd is listening at $sshport
     fi
-    sshport=`cat /etc/ssh/sshd_config |grep ^Port`
-    if [ "$?" != "0" ]; then
-        sshport=22
-    fi
-    echo sshd is listening at $sshport
 }
 
 # msys sshd start function
 
 function startssh(){
-    echo check sshd status 
-    ps -ef|grep sshd > /dev/null
-    if [ "$?" = "0" ]; then
-        echo sshd is running
-    else 
-        echo starting sshd at $sshport
-        /usr/bin/sshd
-    fi
-    sshport=`cat /etc/ssh/sshd_config |grep ^Port`
+    echo check sshd status
+    # if sshd installed
+    which sshd > /dev/null
     if [ "$?" != "0" ]; then
-        sshport=22
+        echo sshd not installed
+    else
+        # if sshd running
+        ps -ef|grep sshd > /dev/null
+        if [ "$?" = "0" ]; then
+            echo sshd is running
+        else 
+            echo starting sshd
+            `which sshd`
+        fi
+        # if sshd_config exist
+        ls /etc/ssh/sshd_config > /dev/null
+        if [ "$?" != "0" ]; then
+            echo /etc/ssh/sshd_config not exist
+        else 
+            sshport=`cat /etc/ssh/sshd_config |grep ^Port`
+            if [ "$?" != "0" ]; then
+                sshport=22
+            fi
+            echo sshd is listening at $sshport
+        fi
     fi
-    echo sshd is listening at $sshport
 }
 
 # PORTABLEPATH
