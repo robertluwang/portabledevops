@@ -2,7 +2,7 @@
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm/wsl
 # By Robert Wang
-# Feb 9th, 2019
+# Feb 11th, 2019
 
 #debug
 #set -x 
@@ -13,21 +13,27 @@
 #####################
 
 # default env for WSL or no portable Unix like system
-# PORTABLE=NO will use following 3 DEF, this is case for WSL or no portable msys/cygwin
-# PORTABLE=YES will ignore following 3 DEF, this is case for portable msys/cygwin
-export PORTABLE=YES
-export DEFPORTFOLDER=portabledevops
-export DEFHOMEDRIVEL=c
-export DEFVAGRANTHOME=/mnt/c/vagrant
+
+# YES - portable bash for msys/cygwin, no need below default location 
+# NO - no portable bash like wsl or different location of msys/cygwin
+
+PORTABLEBASH=YES 
+
+# if PORTABLEBASH=NO, then please update below default values
+if [ $PORTABLEBASH = NO ];then
+    DEFPORTFOLDER=portabledevops
+    DEFHOMEDRIVEL=c
+    DEFVAGRANTHOME=/mnt/c/vagrant
+fi
 
 # PORTSYS/USERNAME/USERPROFILE/HOMEPATH
 
-export PORTSYS=`uname|cut -d'_' -f1`
+PORTSYS=`uname|cut -d'_' -f1`
 
 if [[ ! -z "$USER" ]];then
-    export USERNAME=$USER
+    USERNAME=$USER
 elif [[ ! -z "$USERNAME" ]];then
-    export USER=$USERNAME
+    USER=$USERNAME
 fi
 
 if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]; then
@@ -35,35 +41,35 @@ if [ $PORTSYS = 'MSYS' ] || [ $PORTSYS = 'MINGW32' ] || [ $PORTSYS = 'MINGW64' ]
         mkdir -p /home/$USERNAME
     fi
     HOME=/home/$USERNAME
-    export USERPROFILE=$HOME
-    export HOMEPATH=$HOME
+    USERPROFILE=$HOME
+    HOMEPATH=$HOME
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
-    export USERPROFILE=$HOME
-    export HOMEPATH=$HOME
+    USERPROFILE=$HOME
+    HOMEPATH=$HOME
 fi
 
 # PORTFOLDER/HOMEDRIVEL/HOMEDRIVE
 
 cd $HOME
 
-if [ $PORTABLE = NO ] || ([ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]);then
-    export PORTFOLDER=$DEFPORTFOLDER
-    export HOMEDRIVEL=$DEFHOMEDRIVEL
+if [ $PORTABLEBASH = NO ] || ([ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]);then
+    PORTFOLDER=$DEFPORTFOLDER
+    HOMEDRIVEL=$DEFHOMEDRIVEL
 else 
     # portable msys2/cygwin/mobaxterm
     if [  "`env|grep MOBANOACL`" ]; then
-        export PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
-        export HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
+        PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
+        HOMEDRIVEL=`echo $SYMLINKS|cut -d: -f1`
     elif [ "`env|grep BABUN_HOME`" ];then
-        export PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
-        export HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
+        PORTFOLDER=`echo $BABUN_HOME|rev|cut -d/ -f2-|rev|cut -d: -f2-`
+        HOMEDRIVEL=`echo $BABUN_HOME|cut -d: -f1`
     else
-        export PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
-        export HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
+        PORTFOLDER=`cygpath -ml \`pwd\`|rev|cut -d'/' -f4-|rev|cut -d: -f2-`
+        HOMEDRIVEL=`cygpath -m \`pwd\` |cut -d: -f1`
     fi
 fi
 
-export HOMEDRIVE=$HOMEDRIVEL:
+HOMEDRIVE=$HOMEDRIVEL:
 
 # wsl sshd start function
 
@@ -134,16 +140,16 @@ function startssh(){
 # PORTABLEPATH
 
 if [ $PORTSYS = 'CYGWIN' ]; then
-    export PORTABLEPATH=/cygdrive/$HOMEDRIVEL/$PORTFOLDER
+    PORTABLEPATH=/cygdrive/$HOMEDRIVEL/$PORTFOLDER
     startssh
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
-    export PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
+    PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
     export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH=$DEFVAGRANTHOME
     export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-    export PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
+    PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
     startwslssh
 else
-    export PORTABLEPATH=/$HOMEDRIVEL/$PORTFOLDER
+    PORTABLEPATH=/$HOMEDRIVEL/$PORTFOLDER
     startssh
 fi
 
@@ -155,7 +161,7 @@ fi
 
 if [ -d $PORTABLEPATH/7z ]; then
     alias 7zp=$PORTABLEPATH/7z/7-ZipPortable.exe
-    export PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
+    PATH=$PORTABLEPATH/7z/App/7-Zip64:$PATH
 fi
 if [ -d $PORTABLEPATH/imgburn ]; then
     alias img=$PORTABLEPATH/imgburn/ImgBurn.exe
@@ -196,36 +202,37 @@ if [ -d $PORTABLEPATH/brackets ]; then
 fi
 
 if [ -d $PORTABLEPATH/git ]; then
-    export PATH=$PATH:$PORTABLEPATH/git/mingw64/bin
+    PATH=$PATH:$PORTABLEPATH/git/mingw64/bin
 fi
 
 # portable calibre tool
 if [ -d $PORTABLEPATH/calibre ]; then
-    export PATH=$PORTABLEPATH/calibre/Calibre:$PATH
+    PATH=$PORTABLEPATH/calibre/Calibre:$PATH
     alias calibrep=$PORTABLEPATH/calibre/calibre-portable.exe
 fi
 
 # setup VirtualBox path 
 if [ $PORTSYS = 'CYGWIN' ];then 
-    export VBOX_MSI_INSTALL_PATH=/cygdrive/c/Program_Files/Oracle/VirtualBox/
+    VBOX_MSI_INSTALL_PATH=/cygdrive/c/Program_Files/Oracle/VirtualBox/
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
-    export VBOX_MSI_INSTALL_PATH=/mnt/c/Program_Files/Oracle/VirtualBox/
+    VBOX_MSI_INSTALL_PATH=/mnt/c/Program_Files/Oracle/VirtualBox/
     alias VBoxManage=VBoxManage.exe
 else
-    export VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
+    VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
 fi 
 
-export PATH=$VBOX_MSI_INSTALL_PATH:$PATH
+export VBOX_MSI_INSTALL_PATH
+PATH=$VBOX_MSI_INSTALL_PATH:$PATH
 
 # portable docker toolbox
 if [ -d $PORTABLEPATH/dockertoolbox ]; then
-    export PATH=$PORTABLEPATH/dockertoolbox:$PATH
+    PATH=$PORTABLEPATH/dockertoolbox:$PATH
     alias dm=$PORTABLEPATH/dockertoolbox/docker-machine.exe
     alias dc=$PORTABLEPATH/dockertoolbox/docker-compose.exe
 
     # function to setup env for docker vm host
     denv(){
-    if [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
+    if [ `uname|cut -d'_' -f1` = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
             eval $(dm env "$@" --shell bash |sed -e 's|\\|/|g' -e 's|C:/|/mnt/c/|g')
     else
             eval $(dm env "$@" --shell bash) 
@@ -238,13 +245,13 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
     dmssh(){
         sshport=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep ssh |awk -F',' '{print $4}'|awk -F'=' '{print $2}'`
         sshkeywinpath=`dm inspect "$1"|grep SSHKeyPath|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
-        if [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
+        if [ `uname|cut -d'_' -f1` = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
             sshkey=`echo $sshkeywinpath|sed -e 's|\\\\|/|g' -e 's|C:/|/mnt/c/|g'|sed 's|//|/|g'`
         else
             sshkeycygpath=`cygpath -ml $sshkeywinpath`
             sshkeydrive=`echo $sshkeycygpath|awk -F:  '{print $1}'`
             sshkeypath=`echo $sshkeycygpath|awk -F:  '{print $2}'`
-            if [ $PORTSYS = 'CYGWIN' ]; then
+            if [ `uname|cut -d'_' -f1` = 'CYGWIN' ]; then
                 sshkey='/cygdrive/'$sshkeydrive$sshkeypath
             else
                 sshkey='/'$sshkeydrive$sshkeypath
@@ -326,47 +333,42 @@ fi
 
 # portable vagrant
 if [ -d $PORTABLEPATH/vagrant ]; then
-    export PATH=$PORTABLEPATH/vagrant/bin:$PATH
+    PATH=$PORTABLEPATH/vagrant/bin:$PATH
 fi
 
 # portable netsnmp
 if [ -d $PORTABLEPATH/netsnmp ]; then
-    export PATH=$PORTABLEPATH/netsnmp/usr/bin:$PATH
+    PATH=$PORTABLEPATH/netsnmp/usr/bin:$PATH
 fi
 
 # portable Golang
 if [ -d $PORTABLEPATH/go ]; then
-    export GOROOT=$PORTABLEPATH/go
-    #if [ ! -d $HOME/testgo ]; then
-    #    mkdir -p $HOME/testgo
-    #fi 
-    #export GOPATH=$HOME/testgo
-    export GOPATH=/j/oldhorse/test/go
-    export GOBIN=$GOPATH/bin
-    export PATH=$GOBIN:$GOROOT/bin:$PATH
+    GOROOT=$PORTABLEPATH/go
+    GOPATH=/j/oldhorse/test/go
+    GOBIN=$GOPATH/bin
+    PATH=$GOBIN:$GOROOT/bin:$PATH
 fi
 
 # portable Lua
 if [ -d $PORTABLEPATH/Lua ]; then
-    export LUA_DEV=$PORTABLEPATH/Lua/5.1
-    #export LUA_PATH=$PORTABLEPATH/Lua/5.1/lua/?.luac
-    export PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
+    LUA_DEV=$PORTABLEPATH/Lua/5.1
+    PATH=$LUA_DEV:$LUA_DEV/clibs:$PATH
     alias lua=$LUA_DEV/lua.exe
 fi
 
 # portable R
 if [ -d $PORTABLEPATH/R ]; then
-    export PATH=$PORTABLEPATH/R/R-3.3.1/bin/x64:$PATH
+    PATH=$PORTABLEPATH/R/R-3.3.1/bin/x64:$PATH
 fi
 
 # portable ruby
 if [ -d $PORTABLEPATH/ruby23 ]; then
-    export PATH=$PORTABLEPATH/ruby23/bin:$PATH
+    PATH=$PORTABLEPATH/ruby23/bin:$PATH
 fi
 
 # portable mingw64 on msys2
 if [ -d $PORTABLEPATH/msys64/mingw64 ];then
-    export PATH=$PORTABLEPATH/msys64/mingw64/bin:$PATH
+    PATH=$PORTABLEPATH/msys64/mingw64/bin:$PATH
 fi
 
 # portable cmder and cmdermini
@@ -386,13 +388,13 @@ fi
 
 # portable gitbook editor
 if [ -d $PORTABLEPATH/gitbookeditor ]; then
-    export PATH=$PORTABLEPATH/gitbookeditor/app-6.2.1:$PATH
+    PATH=$PORTABLEPATH/gitbookeditor/app-6.2.1:$PATH
     alias gitbooked='cd $PORTABLEPATH/gitbookeditor/app-6.2.1;echo $HOME;$PORTABLEPATH/gitbookeditor/Update.exe --processStart Editor.exe'
 fi
 
 # portable nginx 
 if [ -d $PORTABLEPATH/nginx ]; then
-    export PATH=$PORTABLEPATH/nginx:$PATH
+    PATH=$PORTABLEPATH/nginx:$PATH
     alias nginxstart='cd $PORTABLEPATH/nginx; ./nginx'
     alias nginxstop='cd $PORTABLEPATH/nginx; ./nginx -s stop'
     alias nmpstart='source $PORTABLEPATH/nginx/nmp_start.sh'
@@ -401,40 +403,40 @@ fi
 
 # portable php
 if [ -d $PORTABLEPATH/php ]; then
-    export PATH=$PORTABLEPATH/php:$PATH
+    PATH=$PORTABLEPATH/php:$PATH
     alias phpcgi='cd $PORTABLEPATH/php; ./php-cgi -b 127.0.0.1:9000 -c ./php.ini'
 fi
 
 # portable mysql
 if [ -d $PORTABLEPATH/mysql ]; then
-    export PATH=$PORTABLEPATH/mysql/bin:$PATH
+    PATH=$PORTABLEPATH/mysql/bin:$PATH
     alias mysqldstart='cd $PORTABLEPATH/mysql/bin; ./mysqld --console'
     alias mysqldstop='mysqladmin shutdown -u root -p'
 fi
 
 # portable redis
 if [ -d $PORTABLEPATH/redis ]; then
-    export PATH=$PORTABLEPATH/redis:$PATH
+    PATH=$PORTABLEPATH/redis:$PATH
 fi
 
 # portable wkhtmltopdf
 if [ -d $PORTABLEPATH/wkhtmltopdf ]; then
-    export PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
+    PATH=$PORTABLEPATH/wkhtmltopdf:$PORTABLEPATH/wkhtmltopdf/bin:$PATH
 fi
 
 # portable pdflatex
 if [ -d $PORTABLEPATH/miktex ]; then
-    export PATH=$PORTABLEPATH/miktex/miktex/bin:$PATH
+    PATH=$PORTABLEPATH/miktex/miktex/bin:$PATH
 fi
 
 # portable pandoc
 if [ -d $PORTABLEPATH/pandoc ]; then
-    export PATH=$PORTABLEPATH/pandoc:$PATH
+    PATH=$PORTABLEPATH/pandoc:$PATH
 fi
 
 #  gcloud sdk
 if [ -d $PORTABLEPATH/gcsdk ]; then
-    export PATH=$PORTABLEPATH/gcsdk/google-cloud-sdk/bin:$PATH
+    PATH=$PORTABLEPATH/gcsdk/google-cloud-sdk/bin:$PATH
     export CLOUDSDK_PYTHON=$PORTABLEPATH/gcsdk/google-cloud-sdk/platform/bundledpython/python
 fi
 
@@ -456,6 +458,9 @@ if [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Micro
 else
     alias pwdw='cygpath -ml `pwd`'
 fi
+
+# export common env 
+export PATH USER USERNAME USERPROFILE HOME HOMEDRIVE HOMEPATH PORTABLEPATH
 
 # welcome 
 echo
