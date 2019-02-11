@@ -53,7 +53,7 @@ fi
 cd $HOME
 
 if [ $PORTABLEBASH = NO ] || ([ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]);then
-    PORTFOLDER=$DEFPORTFOLDER
+    PORTFOLDER=/$DEFPORTFOLDER
     HOMEDRIVEL=$DEFHOMEDRIVEL
 else 
     # portable msys2/cygwin/mobaxterm
@@ -140,16 +140,16 @@ function startssh(){
 # PORTABLEPATH
 
 if [ $PORTSYS = 'CYGWIN' ]; then
-    PORTABLEPATH=/cygdrive/$HOMEDRIVEL/$PORTFOLDER
+    PORTABLEPATH=/cygdrive/$HOMEDRIVEL$PORTFOLDER
     startssh
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
-    PORTABLEPATH=/mnt/$HOMEDRIVEL/$PORTFOLDER
+    PORTABLEPATH=/mnt/$HOMEDRIVEL$PORTFOLDER
     export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH=$DEFVAGRANTHOME
     export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
     PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
     startwslssh
 else
-    PORTABLEPATH=/$HOMEDRIVEL/$PORTFOLDER
+    PORTABLEPATH=/$HOMEDRIVEL$PORTFOLDER
     startssh
 fi
 
