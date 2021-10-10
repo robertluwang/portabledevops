@@ -1,11 +1,11 @@
-#!/usr/bin/bash 
+#!/usr/bin/bash
 # portabledevops.sh
 # customized setting for msys2/cygwin64/mobaxterm/wsl
 # By Robert Wang
-# Feb 11th, 2019
+# Oct 10, 2021
 
 #debug
-#set -x 
+#set -x
 #set -o functrace
 
 #####################
@@ -14,14 +14,14 @@
 
 # default env for WSL or no portable Unix like system
 
-# YES - portable bash for msys/cygwin, no need below default location 
+# YES - portable bash for msys/cygwin, no need below default location
 # NO - no portable bash like wsl or different location of msys/cygwin
 
-PORTABLEBASH=YES 
+PORTABLEBASH=NO
 
 # if PORTABLEBASH=NO, then please update below default values
 if [ $PORTABLEBASH = NO ];then
-    DEFPORTFOLDER=portabledevops
+    DEFPORTFOLDER=dclab/portableapps
     DEFHOMEDRIVEL=c
     DEFVAGRANTHOME=/mnt/c/vagrant
 fi
@@ -55,7 +55,7 @@ cd $HOME
 if [ $PORTABLEBASH = NO ] || ([ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]);then
     PORTFOLDER=/$DEFPORTFOLDER
     HOMEDRIVEL=$DEFHOMEDRIVEL
-else 
+else
     # portable msys2/cygwin/mobaxterm
     if [  "`env|grep MOBANOACL`" ]; then
         PORTFOLDER=`echo $SYMLINKS|rev|cut -d'/' -f5-|rev|cut -d: -f2-`
@@ -114,7 +114,7 @@ function startssh(){
         ps -ef|grep sshd > /dev/null
         if [ "$?" = "0" ]; then
             echo sshd is running
-        else 
+        else
             echo starting sshd
             `which sshd`
             if [ "$?" = "0" ]; then
@@ -127,7 +127,7 @@ function startssh(){
         ls /etc/ssh/sshd_config > /dev/null
         if [ "$?" != "0" ]; then
             echo /etc/ssh/sshd_config not exist
-        else 
+        else
             sshport=`cat /etc/ssh/sshd_config |grep ^Port`
             if [ "$?" != "0" ]; then
                 sshport=22
@@ -154,7 +154,7 @@ else
 fi
 
 ######################################
-# Section - portable application setup 
+# Section - portable application setup
 ######################################
 
 # portable production tool
@@ -211,31 +211,35 @@ if [ -d $PORTABLEPATH/calibre ]; then
     alias calibrep=$PORTABLEPATH/calibre/calibre-portable.exe
 fi
 
-# setup VirtualBox path 
-if [ $PORTSYS = 'CYGWIN' ];then 
+# setup VirtualBox path
+if [ $PORTSYS = 'CYGWIN' ];then
     VBOX_MSI_INSTALL_PATH=/cygdrive/c/Program_Files/Oracle/VirtualBox/
 elif [ $PORTSYS = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ];then
     VBOX_MSI_INSTALL_PATH=/mnt/c/Program_Files/Oracle/VirtualBox/
     alias VBoxManage=VBoxManage.exe
 else
     VBOX_MSI_INSTALL_PATH=/c/Program_Files/Oracle/VirtualBox/
-fi 
+fi
 
 export VBOX_MSI_INSTALL_PATH
 PATH=$VBOX_MSI_INSTALL_PATH:$PATH
 
 # portable docker toolbox
-if [ -d $PORTABLEPATH/dockertoolbox ]; then
+if [ $(which docker.exe >/dev/null ; echo $?) == 0 ]; then
+    alias dm=docker-machine.exe
+    alias dc=docker-compose.exe
+elif [ -d $PORTABLEPATH/dockertoolbox ]; then
     PATH=$PORTABLEPATH/dockertoolbox:$PATH
     alias dm=$PORTABLEPATH/dockertoolbox/docker-machine.exe
     alias dc=$PORTABLEPATH/dockertoolbox/docker-compose.exe
+fi
 
     # function to setup env for docker vm host
     denv(){
     if [ `uname|cut -d'_' -f1` = 'Linux' ] && [ `uname -a|awk '{print $4}'|cut -d'-' -f2` = Microsoft ]; then
             eval $(dm env "$@" --shell bash |sed -e 's|\\|/|g' -e 's|C:/|/mnt/c/|g')
     else
-            eval $(dm env "$@" --shell bash) 
+            eval $(dm env "$@" --shell bash)
     fi
     }
 
@@ -256,7 +260,7 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
             else
                 sshkey='/'$sshkeydrive$sshkeypath
             fi
-        fi 
+        fi
         shift
         ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no docker@127.0.0.1 -o IdentitiesOnly=yes -i $sshkey -p $sshport "$@"
     }
@@ -268,12 +272,12 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
     # remedy for local docker test without TLS verification when firewall existing
     dockerfw(){
         check2375=`VBoxManage showvminfo "$1"|grep 127.0.0.1|grep 2375|cut -d, -f4|cut -d= -f2`
-        if [ $check2375 == '2375' ]; then 
+        if [ $check2375 == '2375' ]; then
             # if 127.0.0.1 2375 forward exist, skip
-            echo 
-        else 
-            VBoxManage controlvm "$1" natpf1 docker-fw,tcp,127.0.0.1,2375,,2376 
-        fi 
+            echo
+        else
+            VBoxManage controlvm "$1" natpf1 docker-fw,tcp,127.0.0.1,2375,,2376
+        fi
 
         certwinpath=`dm inspect "$1"|grep StorePath|tail -1|awk '{print $2}'|awk -F, '{print $1}'|awk -F\" '{print $2}'`
         certcygpath=`cygpath -ml $certwinpath`
@@ -285,50 +289,56 @@ if [ -d $PORTABLEPATH/dockertoolbox ]; then
            dockercert='/'$certdrive$certpath
         fi
 
-        export DOCKER_MACHINE_NAME="$1" 
-        export DOCKER_HOST="tcp://127.0.0.1:2375" 
+        export DOCKER_MACHINE_NAME="$1"
+        export DOCKER_HOST="tcp://127.0.0.1:2375"
         export DOCKER_CERT_PATH=$dockercert
-        alias docker='docker --tls'  
+        alias docker='docker --tls'
     }
     export -f dockerfw
 
     # remedy for minikube test without TLS verification when firewall existing
     minikubefw(){
         check8443=`VBoxManage showvminfo minikube|grep 127.0.0.1|grep 8443|cut -d, -f4|cut -d= -f2`
-        if [ $check8443 == '8443' ]; then 
+        if [ $check8443 == '8443' ]; then
             # if 127.0.0.1 8443 forward exist, skip
-            echo 
-        else 
+            echo
+        else
             VBoxManage controlvm minikube natpf1 k8s-apiserver,tcp,127.0.0.1,8443,,8443
-        fi 
+        fi
 
         check2374=`VBoxManage showvminfo minikube|grep 127.0.0.1|grep 2374|cut -d, -f4|cut -d= -f2`
-        if [ $check2374 == '2374' ]; then 
+        if [ $check2374 == '2374' ]; then
             # if 127.0.0.1 2374 forward exist, skip
-            echo 
-        else 
+            echo
+        else
             VBoxManage controlvm minikube natpf1 k8s-docker,tcp,127.0.0.1,2374,,2376
         fi
 
         check30000=`VBoxManage showvminfo minikube|grep 127.0.0.1|grep 30000|cut -d, -f4|cut -d= -f2`
-        if [ $check30000 == '30000' ]; then 
+        if [ $check30000 == '30000' ]; then
             # if 127.0.0.1 30000 forward exist, skip
-            echo 
-        else 
+            echo
+        else
             VBoxManage controlvm minikube natpf1 k8s-dashboard,tcp,127.0.0.1,30000,,30000
-        fi 
+        fi
 
         kubectl config set-cluster minikube-vpn --server=https://127.0.0.1:8443 --insecure-skip-tls-verify
         kubectl config set-context minikube-vpn --cluster=minikube-vpn --user=minikube
-        kubectl config use-context minikube-vpn  
+        kubectl config use-context minikube-vpn
 
-        eval $(minikube docker-env) 
+        eval $(minikube docker-env)
         unset DOCKER_TLS_VERIFY
         export DOCKER_HOST="tcp://127.0.0.1:2374"
         alias docker='docker --tls'
     }
     export -f minikubefw
 
+# short for kubectl
+if [ $(which kubectl.exe >/dev/null ; echo $?) == 0 ] | [ $(which kubectl >/dev/null ; echo $?) == 0 ];then
+        source <(kubectl completion bash)
+        alias k=kubectl
+        complete -F __start_kubectl k
+        export do='--dry-run=client -o yaml'
 fi
 
 # portable vagrant
@@ -379,12 +389,12 @@ fi
 # portable console2
 if [ -d $PORTABLEPATH/console2 ]; then
     alias console2=$PORTABLEPATH/console2/Console.exe
-fi 
+fi
 
 # portable consolez
 if [ -d $PORTABLEPATH/consolez ]; then
     alias consolez=$PORTABLEPATH/consolez/Console.exe
-fi 
+fi
 
 # portable gitbook editor
 if [ -d $PORTABLEPATH/gitbookeditor ]; then
@@ -392,7 +402,7 @@ if [ -d $PORTABLEPATH/gitbookeditor ]; then
     alias gitbooked='cd $PORTABLEPATH/gitbookeditor/app-6.2.1;echo $HOME;$PORTABLEPATH/gitbookeditor/Update.exe --processStart Editor.exe'
 fi
 
-# portable nginx 
+# portable nginx
 if [ -d $PORTABLEPATH/nginx ]; then
     PATH=$PORTABLEPATH/nginx:$PATH
     alias nginxstart='cd $PORTABLEPATH/nginx; ./nginx'
@@ -442,13 +452,16 @@ fi
 
 # ssh-agent
 eval $(ssh-agent -s)
- 
+
 if [ ! -e /home/$USERNAME/.ssh/id_rsa ]; then
     echo "ssh key not exist: /home/$USERNAME/.ssh/id_rsa"
     echo "please generate it using ssh-keygen"
 else
     ssh-add /home/$USERNAME/.ssh/id_rsa
-fi 
+fi
+
+# add ssh key for Ericsson gitlab repo
+ssh-add /home/oldhorse/.ssh/id_rsa_gitlab
 
 # common alias
 alias ll='ls -ltra'
@@ -459,10 +472,10 @@ else
     alias pwdw='cygpath -ml `pwd`'
 fi
 
-# export common env 
+# export common env
 export PATH USER USERNAME USERPROFILE HOME HOMEDRIVE HOMEPATH PORTABLEPATH
 
-# welcome 
+# welcome
 echo
 echo "Welcome to portabledevops"
 echo "Platform: "$PORTSYS
