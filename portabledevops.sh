@@ -244,6 +244,14 @@ fi
     }
 
     export -f denv
+    
+    # function to setup env for docker vm on Virtualbox, assume dockerd listen on tcp:0.0.0.0:2375
+    denv2vm(){
+    unset DOCKER_TLS_VERIFY
+    export DOCKER_HOST="tcp://127.0.0.1:2375"
+    }
+    
+    export -f denv2vm
 
     # directly ssh to docker vm when docker-machine env not working well
     dmssh(){
